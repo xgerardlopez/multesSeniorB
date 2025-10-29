@@ -345,3 +345,35 @@ td:last-child {
   from { transform: translateY(30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
+/* ----- TAULA RESPONSIVE (scroll horitzontal) ----- */
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+  margin-top: 10px;
+  padding-bottom: 10px;
+}
+
+#taulaMultes {
+  min-width: 700px;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#taulaMultes th, #taulaMultes td {
+  padding: 10px 12px;
+}
+
+@media (max-width: 768px) {
+  .table-container {
+    margin-top: 0;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    padding: 10px;
+  }
+
+  #taulaMultes th, #taulaMultes td {
+    font-size: 13px;
+    padding: 8px;
+  }
+}
+
