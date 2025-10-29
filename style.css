@@ -22,7 +22,47 @@ h1 {
   padding: 30px;
 }
 
-/* ----- TAULA PRINCIPAL ----- */
+/* ----- SECCIONS ----- */
+h2, h3 {
+  margin-top: 40px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* ----- MULTES PER JUGADOR ----- */
+#players {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.player-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  border: 1px solid #e9ecef;
+}
+
+.player-row:hover {
+  background: #e9ecef;
+  transform: translateY(-1px);
+}
+
+.player-name {
+  font-weight: 600;
+  color: #212529;
+}
+
+.amount {
+  font-weight: 700;
+  color: #495057;
+}
+
+/* ----- TAULA PRINCIPAL (Totes les multes) ----- */
 table {
   width: 100%;
   border-collapse: separate;
@@ -92,6 +132,33 @@ td:last-child {
   color: #721c24;
 }
 
+/* ----- NORMES ----- */
+#normesList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.norma {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 14px 18px;
+  border: 1px solid #e9ecef;
+  font-size: 14px;
+  color: #333;
+}
+
+.norma strong {
+  color: #212529;
+}
+
+.norma small {
+  display: block;
+  color: #6c757d;
+  margin-top: 5px;
+}
+
 /* ----- RESPONSIVE ----- */
 @media (max-width: 768px) {
   body {
@@ -113,6 +180,12 @@ td:last-child {
   .status {
     font-size: 11px;
     padding: 4px 8px;
+  }
+
+  .player-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
 }
 
