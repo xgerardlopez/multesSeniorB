@@ -13,7 +13,7 @@ async function carregarMultes() {
     const rows = text.split("\n").map(r => r.split(","));
     const headers = rows.shift().map(h => h.trim());
 
-    const data = rows
+    let data = rows
       .filter(r => r.length >= headers.length && r[0] !== "")
       .map(r => {
         let obj = {};
@@ -21,6 +21,7 @@ async function carregarMultes() {
         return obj;
       });
 
+    data = data.reverse();
     // 🔹 Ordenem de més nova a més antiga (la data més recent primer)
     const multes = data
       .map(m => ({
