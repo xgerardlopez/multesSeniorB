@@ -43,6 +43,7 @@ function carregarJugadors(multes) {
   playersDiv.innerHTML = '';
 
   const jugadors = [...new Set(multes.map(m => m.jugador))];
+
   jugadors.forEach(nom => {
     const multesJugador = multes.filter(m => m.jugador === nom);
     const total = multesJugador.reduce((acc, m) => acc + (m.import || 0), 0);
@@ -51,6 +52,7 @@ function carregarJugadors(multes) {
     div.className = 'player-card';
     div.innerHTML = `
       <span class="player-name">${nom}</span>
+      <div class="divider"></div>
       <span class="player-amount">${total.toFixed(2)} €</span>
     `;
     playersDiv.appendChild(div);
