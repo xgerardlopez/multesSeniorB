@@ -22,12 +22,12 @@ async function carregarMultes() {
       });
 
     const multes = data.map(m => ({
-      jugador: m["Jugador"] || m["jugador"],
-      import: parseFloat(m["Import"] || m["import"] || 0),
-      tipus: m["Tipus"] || m["tipus"],
-      comentari: m["Comentari"] || m["comentari"],
-      data: m["Data"] || m["data"],
-      estat: m["Estat"] || m["estat"] || "Pendent"
+      jugador: m["Jugador"] || m["Jugador"],
+      import: parseFloat(m["Import"] || m["Import"] || 0),
+      tipus: m["Tipus"] || m["Tipus"],
+      comentari: m["Comentari"] || m["Comentari"],
+      data: m["Data"] || m["Data"],
+      estat: m["Estat"] || m["Estat"] || "Pendent"
     }));
 
     window.multes = multes;
