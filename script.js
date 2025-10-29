@@ -123,15 +123,19 @@ carregarNormes();
 
 // --- MODAL DETALL DE MULTES PER JUGADOR ---
 
-// Crear el modal dinàmicament
 function mostrarDetallJugador(nom, multes) {
+  // 🔹 Eliminar qualsevol modal antic abans de crear-ne un de nou
+  const existent = document.querySelector(".modal-overlay");
+  if (existent) existent.remove();
+
+  // 🔹 Crear el modal
   const modal = document.createElement("div");
   modal.className = "modal-overlay";
   modal.innerHTML = `
     <div class="modal-content">
       <div class="modal-header">
         <h3>Multes de ${nom}</h3>
-        <button class="close-btn">&times;</button>
+        <button class="close-btn" title="Tancar">&times;</button>
       </div>
       <div class="modal-body">
         <table class="fines-table">
@@ -146,7 +150,7 @@ function mostrarDetallJugador(nom, multes) {
           <tbody>
             ${multes.map(m => `
               <tr>
-                <td>${m.tipus}</td>
+                <td>${m.tipus || m.Tipus || '-'}</td>
                 <td>${m.comentari || '-'}</td>
                 <td style="text-align:right;">${parseFloat(m.import).toFixed(2)} €</td>
                 <td>${m.data}</td>
@@ -165,13 +169,17 @@ function mostrarDetallJugador(nom, multes) {
       </div>
     </div>
   `;
-  document.body.appendChild(modal);
 
+  // 🔹 Afegim el modal al body i li donem animació
+  document.body.appendChild(modal);
+  setTimeout(() => modal.classList.add("visible"), 10);
+
+  // 🔹 Tancar el modal fent clic a la “X” o fora de la finestra
   modal.querySelector(".close-btn").onclick = () => modal.remove();
   modal.onclick = e => { if (e.target === modal) modal.remove(); };
 }
 
-// Afegir l’event al clicar un jugador
+// 🔹 Detectar clic sobre una targeta de jugador
 document.addEventListener("click", (e) => {
   const card = e.target.closest(".player-card, .player-row");
   if (card && window.multes) {
@@ -180,4 +188,5 @@ document.addEventListener("click", (e) => {
     if (multesJugador.length > 0) mostrarDetallJugador(nom, multesJugador);
   }
 });
+
 
