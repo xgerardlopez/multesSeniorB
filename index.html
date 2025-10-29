@@ -1,152 +1,65 @@
 <!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <title>Multes SeniorB</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-      <h1>Multes SeniorB</h1>
-
-      <div v-if="parsedData.length" id="app-content" style="visibility: hidden">
-        <div v-if="error" class="error">Error: {{ error }}</div>
-        <h3>Multes per Jugador</h3>
-
-        <!-- Jugadors -->
-        <div class="players-table">
-          <div
-            v-for="player in playersWithFines"
-            :key="player.name"
-            class="player-row"
-            @click="showPlayerDetails(player)"
-          >
-            <div class="player-info">
-              <img :src="player.img" :alt="player.name" class="player-avatar" />
-              <span class="player-name">{{ player.name }}</span>
-            </div>
-            <div class="total-fines">
-              <span :class="['amount', getAmountClass(player.totalFines)]">
-                {{ player.totalFines.toFixed(2) }} €
-              </span>
-              <span class="count">({{ player.pendingCount }} multes)</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Totes les multes -->
-        <div class="all-fines-section">
-          <div class="section-header">
-            <h3>Totes les Multes</h3>
-            <button
-              @click="toggleFilters"
-              class="toggle-filters-btn"
-              :class="{ 'expanded': filtersVisible }"
-            >
-              <span v-if="!filtersVisible">🔍 Mostrar Filtres</span>
-              <span v-else>🔍 Ocultar Filtres</span>
-            </button>
-          </div>
-
-          <!-- Filtres -->
-          <div class="filters-container" :class="{ 'visible': filtersVisible }">
-            <div class="filter-group">
-              <label>Jugador</label>
-              <input v-model="filters.jugador" type="text" placeholder="Filtrar per jugador..." />
-            </div>
-
-            <div class="filter-group">
-              <label>Tipus</label>
-              <input v-model="filters.tipodemulta" type="text" placeholder="Filtrar per tipus..." />
-            </div>
-
-            <div class="filter-group">
-              <label>Comentari</label>
-              <input v-model="filters.comment" type="text" placeholder="Filtrar per comentari..." />
-            </div>
-
-            <div class="filter-group">
-              <label>Estat</label>
-              <select v-model="filters.status">
-                <option value="">Tots</option>
-                <option value="pendent">Pendent</option>
-                <option value="pagada">Pagada</option>
-                <option value="anulada">Anulada</option>
-              </select>
-            </div>
-
-            <div class="filter-group">
-              <label>Data Desde</label>
-              <input v-model="filters.fechaDesde" type="date" />
-            </div>
-
-            <div class="filter-group">
-              <label>Data Fins</label>
-              <input v-model="filters.fechaHasta" type="date" />
-            </div>
-
-            <button @click="clearFilters" class="clear-filters-btn">
-              Netejar Filtres
-            </button>
-          </div>
-
-          <!-- Taula -->
-          <div class="table-container">
-            <table class="all-fines-table">
-              <thead>
-                <tr>
-                  <th>Jugador</th>
-                  <th>Import</th>
-                  <th>Tipus</th>
-                  <th>Comentari</th>
-                  <th>Data</th>
-                  <th>Estat</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="fine in reversedFilteredAllFines"
-                  :key="fine.jugador + fine.tipodemulta + fine.fechacreacion"
-                >
-                  <td>{{ fine.jugador }}</td>
-                  <td class="amount">{{ fine.precio.toFixed(2) }} €</td>
-                  <td>{{ fine.tipodemulta }}</td>
-                  <td>{{ fine.comment }}</td>
-                  <td>{{ formatDateForDisplay(fine.fechacreacion) }}</td>
-                  <td>
-                    <span :class="['status', fine.status.toLowerCase()]">
-                      {{ fine.status }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colspan="1"><strong>Total:</strong></td>
-                  <td class="amount total">
-                    <strong style="color: black">{{ totalFilteredFines.toFixed(2) }} €</strong>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </div>
-
-        <!-- Normes -->
-        <div class="normes-section">
-          <h3>Normes</h3>
-          <div v-for="(norma, index) in normes" :key="index" class="norma">
-            {{ norma.Norma }}
-            <div v-if="norma.Excepcio">
-              <span class="exception">Excepció: {{ norma.Excepcio }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multes SeniorB</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div style="text-align: center">
+      <img
+        src="https://res.cloudinary.com/srourera/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1756555944/minguella/agrupacio-esportiva-minguella-escut_eri68n.jpg"
+        alt="Logo Minguella"
+        style="width: 150px; height: 150px; object-fit: contain"
+      />
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="script.js"></script>
-  </body>
+    <h1>Multes SeniorB</h1>
+
+    <section id="players-section">
+      <h3>Multes per jugador</h3>
+      <div id="players"></div>
+    </section>
+
+    <section id="multes-section">
+      <h3>Totes les multes</h3>
+
+      <div class="filters">
+        <input type="text" id="filterJugador" placeholder="Filtra per jugador">
+        <select id="filterEstat">
+          <option value="">Tots els estats</option>
+          <option value="pendent">Pendent</option>
+          <option value="pagada">Pagada</option>
+          <option value="anulada">Anulada</option>
+        </select>
+        <button onclick="aplicarFiltres()">Filtra</button>
+        <button onclick="resetFiltres()">Restableix</button>
+      </div>
+
+      <table id="taulaMultes">
+        <thead>
+          <tr>
+            <th>Jugador</th>
+            <th>Import (€)</th>
+            <th>Tipus</th>
+            <th>Comentari</th>
+            <th>Data</th>
+            <th>Estat</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section id="normes-section">
+      <h3>Normes</h3>
+      <div id="normesList"></div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
+
