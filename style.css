@@ -130,11 +130,6 @@ td:nth-child(2) {
   color: #495057;
 }
 
-td:nth-child(2)::after {
-  content: " €";
-  font-weight: 400;
-  color: #6c757d;
-}
 
 /* ----- ESTAT (badge) ----- */
 td:last-child {
