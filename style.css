@@ -41,7 +41,7 @@ h2, h3 {
   background: #f8f9fa; /* gris molt clar */
   color: #212529;      /* text fosc */
   padding: 14px 18px;
-  border-radius: 12px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -65,9 +65,7 @@ h2, h3 {
 }
 
 .divider {
-  flex: 1;
-  border-bottom: 1px dashed rgba(0,0,0,0.15);
-  margin: 0 10px;
+  display: none;
 }
 
 .player-amount {
