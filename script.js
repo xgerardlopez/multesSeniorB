@@ -120,3 +120,64 @@ function carregarNormes() {
 }
 
 carregarNormes(); 
+
+// --- MODAL DETALL DE MULTES PER JUGADOR ---
+
+// Crear el modal dinàmicament
+function mostrarDetallJugador(nom, multes) {
+  const modal = document.createElement("div");
+  modal.className = "modal-overlay";
+  modal.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Multes de ${nom}</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <table class="fines-table">
+          <thead>
+            <tr>
+              <th>Tipus de Multa</th>
+              <th>Comentari</th>
+              <th>Import</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${multes.map(m => `
+              <tr>
+                <td>${m.tipus}</td>
+                <td>${m.comentari || '-'}</td>
+                <td style="text-align:right;">${parseFloat(m.import).toFixed(2)} €</td>
+                <td>${m.data}</td>
+              </tr>`).join("")}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2"><strong>Total:</strong></td>
+              <td style="text-align:right; color:#dc3545; font-weight:700;">
+                ${multes.reduce((a, m) => a + parseFloat(m.import || 0), 0).toFixed(2)} €
+              </td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  modal.querySelector(".close-btn").onclick = () => modal.remove();
+  modal.onclick = e => { if (e.target === modal) modal.remove(); };
+}
+
+// Afegir l’event al clicar un jugador
+document.addEventListener("click", (e) => {
+  const card = e.target.closest(".player-card, .player-row");
+  if (card && window.multes) {
+    const nom = card.querySelector(".player-name").textContent.trim();
+    const multesJugador = window.multes.filter(m => m.jugador === nom);
+    if (multesJugador.length > 0) mostrarDetallJugador(nom, multesJugador);
+  }
+});
+
