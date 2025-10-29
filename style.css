@@ -51,9 +51,11 @@ h2, h3 {
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   width: 100%;
+  box-sizing: border-box; /* ✅ Afegeix aquesta línia */
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   border: 1px solid #e9ecef;
 }
+
 
 .player-card:hover {
   background: #e9ecef; /* lleugerament més fosc en hover */
