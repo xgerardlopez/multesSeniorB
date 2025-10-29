@@ -1,200 +1,122 @@
-const { createApp } = Vue;
+// URL del full publicat (Multes)
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQUfrZ7AIsVOACiOZSEPBE7b_jfuL5TUFufgHVVze5-eeOqXRYwxbt6FGJ9TltBI2AMxVQTQ2ZE1crw/pub?gid=0&single=true&output=csv";
 
-const SHEET_ID = "1un2vHvkFn8V9T9JQkDYhDu_WYGXY584ilDuACKzt-Ak";
-const MULTES_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
-const JUGADORS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=1534873034`;
-const NORMES_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=666064212`;
+// Carrega automàtica cada 60 segons
+carregarMultes();
+setInterval(carregarMultes, 60000);
 
-const parsePrice = (v) => {
-  if (v == null) return 0;
-  const s = String(v).trim().replace(/[€\s]/g, "").replace(",", ".");
-  const n = parseFloat(s);
-  return Number.isFinite(n) ? n : 0;
-};
+async function carregarMultes() {
+  try {
+    const res = await fetch(SHEET_URL);
+    const text = await res.text();
 
-const parseDate = (v) => String(v || "").split(" ")[0];
+    const rows = text.split("\n").map(r => r.split(","));
+    const headers = rows.shift().map(h => h.trim());
+    const data = rows
+      .filter(r => r.length >= headers.length && r[0] !== "")
+      .map(r => {
+        let obj = {};
+        headers.forEach((h, i) => obj[h] = r[i] ? r[i].trim() : "");
+        return obj;
+      });
 
-function rowsToObjects(papaResult) {
-  const rows = papaResult.data || [];
-  if (!rows.length) return [];
-  return rows.map((r) => ({
-    jugador: r["Jugador"] || "",
-    tipodemulta: r["Tipus"] || "",
-    precio: parsePrice(r["Import"] || "0"),
-    comment: r["Comentari"] || "",
-    fechacreacion: parseDate(r["Data"] || ""),
-    status: (r["Estat"] || "Pendent").toLowerCase(),
-  }));
+    const multes = data.map(m => ({
+      jugador: m["Jugador"] || "",
+      import: parseFloat(m["Import (€)"] || m["Import"] || 0),
+      tipus: m["Tipus"] || "",
+      comentari: m["Comentari"] || "-",
+      data: m["Data"] || "",
+      estat: m["Estat"] || "Pendent"
+    }));
+
+    window.multes = multes;
+    carregarJugadors(multes);
+    carregarTaula(multes);
+  } catch (error) {
+    console.error("Error carregant dades:", error);
+  }
 }
 
-createApp({
-  data() {
-    return {
-      loading: false,
-      error: "",
-      parsedData: [],
-      players: [],
-      normes: [],
-      selectedPlayer: null,
-      filters: {
-        jugador: "",
-        tipodemulta: "",
-        comment: "",
-        status: "",
-        fechaDesde: "",
-        fechaHasta: "",
-      },
-      filtersVisible: false,
-    };
-  },
-  computed: {
-    playersWithFines() {
-      const playersMap = {};
-      this.players.forEach((player) => {
-        playersMap[player.Nom] = {
-          name: player.Nom,
-          img: player.Foto,
-          fines: [],
-          totalFines: 0,
-          pendingCount: 0,
-        };
-      });
+function carregarJugadors(multes) {
+  const playersDiv = document.getElementById('players');
+  playersDiv.innerHTML = '';
 
-      this.parsedData.forEach((fine) => {
-        const playerName = fine.jugador;
-        if (playersMap[playerName]) {
-          if (fine.status.toLowerCase() === "pendent") {
-            playersMap[playerName].fines.push(fine);
-            playersMap[playerName].pendingCount++;
-            playersMap[playerName].totalFines += fine.precio;
-          }
-        }
-      });
+  const jugadors = [...new Set(multes.map(m => m.jugador))];
 
-      return Object.values(playersMap).sort(
-        (a, b) => b.totalFines - a.totalFines
-      );
-    },
-    filteredAllFines() {
-      return this.parsedData.filter((fine) => {
-        if (
-          this.filters.jugador &&
-          !fine.jugador
-            .toLowerCase()
-            .includes(this.filters.jugador.toLowerCase())
-        )
-          return false;
-        if (
-          this.filters.tipodemulta &&
-          !fine.tipodemulta
-            .toLowerCase()
-            .includes(this.filters.tipodemulta.toLowerCase())
-        )
-          return false;
-        if (
-          this.filters.comment &&
-          !fine.comment
-            .toLowerCase()
-            .includes(this.filters.comment.toLowerCase())
-        )
-          return false;
-        if (
-          this.filters.status &&
-          fine.status.toLowerCase() !==
-            this.filters.status.toLowerCase()
-        )
-          return false;
-        if (
-          this.filters.fechaDesde &&
-          fine.fechacreacion < this.filters.fechaDesde
-        )
-          return false;
-        if (
-          this.filters.fechaHasta &&
-          fine.fechacreacion > this.filters.fechaHasta
-        )
-          return false;
-        return true;
-      });
-    },
-    reversedFilteredAllFines() {
-      return [...this.filteredAllFines].reverse();
-    },
-    totalFilteredFines() {
-      return this.filteredAllFines.reduce(
-        (total, fine) => total + fine.precio,
-        0
-      );
-    },
-  },
-  methods: {
-    async loadNormes() {
-      try {
-        const res = await fetch(NORMES_URL);
-        const text = await res.text();
-        const papa = Papa.parse(text, { header: true, skipEmptyLines: true });
-        this.normes = papa.data;
-      } catch (e) {
-        this.error = String(e);
-      }
-    },
-    async loadPlayers() {
-      try {
-        const res = await fetch(JUGADORS_URL);
-        const text = await res.text();
-        const papa = Papa.parse(text, { header: true, skipEmptyLines: true });
-        this.players = papa.data;
-      } catch (e) {
-        this.error = String(e);
-      }
-    },
-    async load() {
-      this.loading = true;
-      this.error = "";
-      try {
-        const res = await fetch(MULTES_URL, { cache: "no-store" });
-        const text = await res.text();
-        const papa = Papa.parse(text, { header: true, skipEmptyLines: true });
-        this.parsedData = rowsToObjects(papa);
-        await this.loadPlayers();
-        await this.loadNormes();
-      } catch (e) {
-        this.error = String(e);
-      } finally {
-        this.loading = false;
-      }
-    },
-    showPlayerDetails(player) {
-      this.selectedPlayer = player;
-    },
-    closePlayerDetails() {
-      this.selectedPlayer = null;
-    },
-    formatDateForDisplay(dateString) {
-      return dateString;
-    },
-    clearFilters() {
-      this.filters = {
-        jugador: "",
-        tipodemulta: "",
-        comment: "",
-        status: "",
-        fechaDesde: "",
-        fechaHasta: "",
-      };
-    },
-    toggleFilters() {
-      this.filtersVisible = !this.filtersVisible;
-    },
-    getAmountClass(amount) {
-      if (amount <= 10) return "low";
-      if (amount <= 25) return "medium";
-      if (amount <= 40) return "high";
-      return "critical";
-    },
-  },
-  async mounted() {
-    await this.load();
-    document.getElementById("app-content").style.visibility = "visible";
-  },
-}).mount("#app");
+  jugadors.forEach(nom => {
+    const multesJugador = multes.filter(m => m.jugador === nom);
+    const total = multesJugador.reduce((acc, m) => acc + (m.import || 0), 0);
+
+    const div = document.createElement('div');
+    div.className = 'player-row';
+    div.innerHTML = `
+      <div class="player-info">
+        <span class="player-name">${nom}</span>
+      </div>
+      <div class="total-fines">
+        <span class="amount">${total.toFixed(2)} €</span>
+      </div>
+    `;
+    playersDiv.appendChild(div);
+  });
+}
+
+function carregarTaula(data) {
+  const tbody = document.querySelector('#taulaMultes tbody');
+  tbody.innerHTML = '';
+  data.forEach(m => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${m.jugador}</td>
+      <td>${m.import.toFixed(2)}</td>
+      <td>${m.tipus}</td>
+      <td>${m.comentari}</td>
+      <td>${m.data}</td>
+      <td>${m.estat}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function aplicarFiltres() {
+  const jugador = document.getElementById('filterJugador').value.toLowerCase();
+  const estat = document.getElementById('filterEstat').value.toLowerCase();
+
+  const filtrat = window.multes.filter(m =>
+    (jugador === "" || m.jugador.toLowerCase().includes(jugador)) &&
+    (estat === "" || m.estat.toLowerCase() === estat)
+  );
+
+  carregarTaula(filtrat);
+}
+
+function resetFiltres() {
+  document.getElementById('filterJugador').value = '';
+  document.getElementById('filterEstat').value = '';
+  carregarTaula(window.multes);
+}
+
+// Normes (pots canviar-les des de la pestanya “Normes”)
+const normes = [
+  { norma: "Arribar tard entreno/partit (+20min): 5€", excepcio: "Motiu justificat" },
+  { norma: "Tècnica: 5€ la primera, 10€ la segona, etc. Màxim 30€", excepcio: "Cap" },
+  { norma: "No assistir sopar oficial: 10€", excepcio: "Motiu justificat" },
+  { norma: "No entrar espai o carpa en sopar oficial: 10€", excepcio: "Si no s'ha assistit al sopar" },
+  { norma: "Deixar-se la blanca fora de casa: 15€", excepcio: "Lesionat" },
+  { norma: "No assistir entreno: 5€", excepcio: "Motiu justificat" },
+  { norma: "No assistir físic: 3€", excepcio: "Motiu justificat" },
+  { norma: "Fallar oráculo: 1€ per jugador fallat", excepcio: "Cap" }
+];
+
+function carregarNormes() {
+  const container = document.getElementById('normesList');
+  container.innerHTML = '';
+  normes.forEach(n => {
+    const div = document.createElement('div');
+    div.className = 'norma';
+    div.innerHTML = `<strong>${n.norma}</strong><br>Excepció: ${n.excepcio}`;
+    container.appendChild(div);
+  });
+}
+
+carregarNormes(); 
