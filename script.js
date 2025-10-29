@@ -22,7 +22,7 @@ async function carregarMultes() {
 
     const multes = data.map(m => ({
       jugador: m["Jugador"] || "",
-      import: parseFloat(m["Import (€)"] || m["Import"] || 0),
+      import: parseFloat(m["Import"] || m["Import"] || 0),
       tipus: m["Tipus"] || "",
       comentari: m["Comentari"] || "-",
       data: m["Data"] || "",
