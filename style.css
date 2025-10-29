@@ -1,7 +1,7 @@
 /* --- ESTIL GLOBAL --- */
 :root {
-  --bg-dark: #0a0a0a;         /* Fons general */
-  --bg-card: #141414;         /* Fons dels blocs */
+  --bg-dark: #0a0a0a;
+  --bg-card: #141414;
   --text-light: #e6e6e6;
   --text-muted: #a0a0a0;
   --border-color: #222;
@@ -19,27 +19,29 @@ body {
 
 /* --- CAPÇALERA --- */
 header {
-  background-color: #000;       /* TOT NEGRE */
+  background-color: #000;
   color: var(--text-light);
   display: flex;
   align-items: center;
-  padding: 20px 40px;
+  justify-content: flex-start;
+  padding: 25px 40px;
   border-bottom: 1px solid #111;
   position: relative;
-  z-index: 10;
+  overflow: visible;
 }
 
 .logo {
-  height: 80px;
-  width: 80px;
+  height: 100px;
+  width: 100px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #111;
+  border: 3px solid #111;
+  background-color: #111;
   margin-right: 20px;
 }
 
 h1 {
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 600;
   margin: 0;
   color: var(--text-light);
@@ -47,7 +49,7 @@ h1 {
 
 /* --- TÍTOLS DE SECCIÓ --- */
 h2 {
-  text-align: left;              /* A l’esquerra */
+  text-align: left;
   margin: 40px auto 20px;
   width: 90%;
   color: var(--text-muted);
@@ -56,7 +58,7 @@ h2 {
   letter-spacing: 1px;
 }
 
-/* --- LLISTA DE JUGADORS (RECTANGLES HORITZONTALS) --- */
+/* --- LLISTA DE JUGADORS --- */
 .players {
   display: flex;
   flex-direction: column;
@@ -84,7 +86,7 @@ h2 {
 .player-name {
   font-size: 18px;
   font-weight: 500;
-  text-align: left; /* ALINEAT A L’ESQUERRA */
+  text-align: left;
   flex: 1;
 }
 
