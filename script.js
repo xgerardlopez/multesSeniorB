@@ -20,6 +20,15 @@ async function carregarMultes() {
         return obj;
       });
 
+    // 🔹 Calcula i mostra el total global de totes les multes
+    const totalGlobal = data.reduce((acc, multa) => {
+    // Busca la columna correcta, segons com es diu al teu CSV
+        const valor = parseFloat(multa["Import"] || multa["Import (€)"] || 0);
+        return acc + (isNaN(valor) ? 0 : valor);
+    }, 0);
+
+    document.getElementById("totalGlobal").textContent = `TOTAL: ${totalGlobal.toFixed(2)} €`;
+
 
     // 🔹 Ordenem de més nova a més antiga (la data més recent primer)
     const multes = data
