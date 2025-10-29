@@ -124,11 +124,12 @@ carregarNormes();
 // --- MODAL DETALL DE MULTES PER JUGADOR ---
 
 function mostrarDetallJugador(nom, multes) {
-  // 🔹 Eliminar qualsevol modal antic abans de crear-ne un de nou
+  // Elimina qualsevol modal obert abans
   const existent = document.querySelector(".modal-overlay");
   if (existent) existent.remove();
 
-  // 🔹 Crear el modal
+  const total = multes.reduce((a, m) => a + parseFloat(m.import || m.Import || 0), 0);
+
   const modal = document.createElement("div");
   modal.className = "modal-overlay";
   modal.innerHTML = `
@@ -150,17 +151,18 @@ function mostrarDetallJugador(nom, multes) {
           <tbody>
             ${multes.map(m => `
               <tr>
-                <td>${m.tipus || m.Tipus || '-'}</td>
-                <td>${m.comentari || '-'}</td>
-                <td style="text-align:right;">${parseFloat(m.import).toFixed(2)} €</td>
-                <td>${m.data}</td>
-              </tr>`).join("")}
+                <td>${m.Tipus || m.tipus || '-'}</td>
+                <td>${(m.Comentari || m.comentari || '-')}</td>
+                <td style="text-align:right;">${parseFloat(m.Import || m.import || 0).toFixed(2)} €</td>
+                <td>${(m.Data || m.data || '').split(' ')[0]}</td>
+              </tr>
+            `).join("")}
           </tbody>
           <tfoot>
             <tr>
               <td colspan="2"><strong>Total:</strong></td>
               <td style="text-align:right; color:#dc3545; font-weight:700;">
-                ${multes.reduce((a, m) => a + parseFloat(m.import || 0), 0).toFixed(2)} €
+                ${total.toFixed(2)} €
               </td>
               <td></td>
             </tr>
@@ -170,23 +172,13 @@ function mostrarDetallJugador(nom, multes) {
     </div>
   `;
 
-  // 🔹 Afegim el modal al body i li donem animació
   document.body.appendChild(modal);
   setTimeout(() => modal.classList.add("visible"), 10);
 
-  // 🔹 Tancar el modal fent clic a la “X” o fora de la finestra
+  // Tancar amb la X o clicant fora
   modal.querySelector(".close-btn").onclick = () => modal.remove();
   modal.onclick = e => { if (e.target === modal) modal.remove(); };
 }
 
-// 🔹 Detectar clic sobre una targeta de jugador
-document.addEventListener("click", (e) => {
-  const card = e.target.closest(".player-card, .player-row");
-  if (card && window.multes) {
-    const nom = card.querySelector(".player-name").textContent.trim();
-    const multesJugador = window.multes.filter(m => m.jugador === nom);
-    if (multesJugador.length > 0) mostrarDetallJugador(nom, multesJugador);
-  }
-});
 
 
