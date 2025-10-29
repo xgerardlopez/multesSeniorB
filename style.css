@@ -229,7 +229,7 @@ td:last-child {
     margin-bottom: 30px;
   }
 }
-
+/* ----- MODAL DETALL DE MULTES ----- */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -253,15 +253,95 @@ td:last-child {
   background: white;
   border-radius: 12px;
   width: 90%;
-  max-width: 800px;
+  max-width: 850px;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   animation: slideUp 0.25s ease;
 }
 
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+  border-bottom: 1px solid #e9ecef;
+  background: #f8f9fa;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 22px;
+  color: #212529;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+  color: #6c757d;
+  font-weight: bold;
+  transition: 0.2s;
+  position: relative;
+  top: -2px;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+.modal-body {
+  padding: 20px 24px;
+}
+
+.fines-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  color: #343a40;
+}
+
+.fines-table th, .fines-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #e9ecef;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.fines-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+}
+
+.fines-table td:nth-child(3) {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ----- Responsive ----- */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    max-height: 85vh;
+  }
+
+  .fines-table {
+    font-size: 13px;
+  }
+
+  .fines-table th, .fines-table td {
+    padding: 10px 6px;
+  }
+
+  .fines-table td:nth-child(4) {
+    white-space: nowrap; /* evita tallar la data */
+  }
+}
+
 @keyframes slideUp {
   from { transform: translateY(30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
-
