@@ -166,7 +166,7 @@ function mostrarDetallJugador(nom, multes) {
         <table class="fines-table">
           <thead>
             <tr>
-              <th>Tipus de Multa</th>
+              <th>Tipus</th>
               <th>Comentari</th>
               <th>Import</th>
               <th>Data</th>
