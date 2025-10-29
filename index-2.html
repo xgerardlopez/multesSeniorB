@@ -2,7 +2,7 @@
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <title>Multes Minguella - Senior A</title>
+    <title>Multes SeniorB</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
       body {
@@ -652,7 +652,7 @@
           src="https://res.cloudinary.com/srourera/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1756555944/minguella/agrupacio-esportiva-minguella-escut_eri68n.jpg"
         />
       </div>
-      <h1>Multes Minguella - Senior A</h1>
+      <h1>Multes SeniorB</h1>
 
       <div v-if="parsedData.length" id="app-content" style="visibility: hidden">
         <div v-if="error" class="error">Error: {{ error }}</div>
@@ -883,54 +883,57 @@
         const { createApp } = Vue;
 
         // 🔧 Sustituye por tu Sheet y pestaña
-        const SHEET_ID = "1fkCpZgF1BCl-_lOsB4O-MGofvkw6NBYAUIGd3aYWOyI";
+        // 🟢 CONFIGURACIÓ ADAPTADA AL TEU FULL (Senior B)
+        const SHEET_ID = "1un2vHvkFn8V9T9JQkDYhDu_WYGXY584ilDuACKzt-Ak";
         const GID = "0";
-        const GID_JUGADORS = "1534873034";
-        const GID_NORMES = "666064212";
         const MULTES_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
-        const JUGADORS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID_JUGADORS}`;
-        const NORMES_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID_NORMES}`;
 
-        // Utilidades
+        const JUGADORS_URL = `https://docs.google.com/spreadsheets/d/e/2PACX-1vQUfrZ7AIsVOACiOZSEPBE7b_jfuL5TUFufgHVVze5-eeOqXRYwxbt6FGJ9TltBI2AMxVQTQ2ZE1crw/pub?gid=1534873034&single=true&output=csv`;
+        const NORMES_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQUfrZ7AIsVOACiOZSEPBE7b_jfuL5TUFufgHVVze5-eeOqXRYwxbt6FGJ9TltBI2AMxVQTQ2ZE1crw/pub?gid=666064212&single=true&output=csv';
+
+        // 🔢 Conversió d'import (suporta “5,00” i “5.00”)
         const parsePrice = (v) => {
-          if (v == null) return 0;
-          const s = String(v).trim().replace(/[€\s]/g, "").replace(",", ".");
-          const n = parseFloat(s);
-          return Number.isFinite(n) ? n : 0;
+        if (v == null) return 0;
+        const s = String(v).trim().replace(/[€\s]/g, "").replace(",", ".");
+        const n = parseFloat(s);
+        return Number.isFinite(n) ? n : 0;
         };
 
-        const normalizeHeader = (s) =>
-          String(s || "")
-            .trim()
-            .toLowerCase();
+        const parseDate = (v) => String(v || "").split(" ")[0];
 
-        const parseDate = (v) => {
-          return v.split(" ")[0];
-        };
-
+        // 🧩 Funció per llegir les multes del teu format concret
         function rowsToObjects(papaResult) {
           const rows = papaResult.data || [];
           if (!rows.length) return [];
-          const headerMap = {};
-          Object.keys(rows[0]).forEach((k) => {
-            headerMap[normalizeHeader(k)] = k;
-          });
 
-          const get = (row, logical) => row[headerMap[logical]] ?? "";
-
-          return rows.map((row) => {
-            const fecha = parseDate(get(row, "fecha creación"));
-            return {
-              jugador: get(row, "jugador"),
-              tipodemulta: get(row, "tipo de multa"),
-              precio: parsePrice(get(row, "importe")),
-              comment: get(row, "comentario"),
-              fechacreacion: fecha,
-              status: String(get(row, "estado") || ""),
-            };
-          });
+          return rows.map((r) => ({
+            jugador: r["Jugador"] || "",
+            tipodemulta: r["Tipus"] || "",
+            precio: parsePrice(r["Import"] || "0"),
+            comment: r["Comentari"] || "",
+            fechacreacion: parseDate(r["Data"] || ""),
+            status: (r["Estat"] || "Pendent").toLowerCase(),
+          }));
         }
 
+        // --- Funció per convertir les files de Jugadors ---
+        function rowsToPlayers(papaResult) {
+          const rows = papaResult.data || [];
+          if (!rows.length) return [];
+          return rows.map((r) => ({
+          Nom: r["Nom"] || r["Jugador"] || "",
+          Foto: r["Foto"] || "",
+          }));
+        }
+        // --- NORMES ---
+        function rowsToNormes(papaResult) {
+          const rows = papaResult.data || [];
+          if (!rows.length) return [];
+          return rows.map((r) => ({
+          norma: r["Norma"] || "",
+          excepcio: r["Excepcio"] || "",
+          }));
+        }
         createApp({
           data() {
             return {
