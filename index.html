@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <title>Multes SeniorB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Multes</h1>
+
+  <section>
+    <h2>Multes per jugador</h2>
+    <div id="players" class="players"></div>
+  </section>
+
+  <section>
+    <h2>Totes les multes</h2>
+    <div class="filters">
+      <input type="text" id="filterJugador" placeholder="Jugador">
+      <select id="filterEstat">
+        <option value="">Tots els estats</option>
+        <option value="Pendent">Pendent</option>
+        <option value="Pagada">Pagada</option>
+      </select>
+      <button onclick="aplicarFiltres()">Filtra</button>
+      <button onclick="resetFiltres()">Restableix</button>
+    </div>
+
+    <table id="taulaMultes">
+      <thead>
+        <tr>
+          <th>Jugador</th>
+          <th>Import (€)</th>
+          <th>Tipus</th>
+          <th>Comentari</th>
+          <th>Data</th>
+          <th>Estat</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section class="normes">
+    <h2>Normes</h2>
+    <div id="normesList"></div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

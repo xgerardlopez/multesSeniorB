@@ -1,0 +1,62 @@
+body {
+  font-family: Calibri, sans-serif;
+  background-color: #f7f7f7;
+  margin: 0;
+  padding: 30px;
+}
+
+h1, h2 {
+  text-align: center;
+  color: #333;
+}
+
+.players {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.player-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 15px;
+  width: 200px;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+th {
+  background-color: #eaeaea;
+}
+
+.filters {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.filters input, .filters select, .filters button {
+  margin: 5px;
+  padding: 6px 8px;
+}
+
+.norma {
+  background: #fff;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
