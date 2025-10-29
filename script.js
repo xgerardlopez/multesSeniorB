@@ -10,24 +10,13 @@ async function carregarMultes() {
     const res = await fetch(SHEET_URL);
     const text = await res.text();
     const rows = text.split("\n").map(r => r.split(","));
-
-    // 🔹 Separa les línies i elimina línies buides
-    const rows = text
-      .split("\n")
-      .filter(r => r.trim() !== "") // ✅ elimina línies buides
-      .map(r => r.split(","));
-
     const headers = rows.shift().map(h => h.trim());
 
     const data = rows
       .filter(r => r.length >= headers.length && r[0] !== "")
-    // 🔹 Construeix els objectes
-    let data = rows
-      .filter(r => r.length >= headers.length && r[0].trim() !== "")
       .map(r => {
         let obj = {};
         headers.forEach((h, i) => obj[h] = r[i] ? r[i].trim() : "");
-        headers.forEach((h, i) => (obj[h] = r[i] ? r[i].trim() : ""));
         return obj;
       });
 
