@@ -46,11 +46,13 @@ function carregarJugadors(multes) {
   jugadors.forEach(nom => {
     const multesJugador = multes.filter(m => m.jugador === nom);
     const total = multesJugador.reduce((acc, m) => acc + (m.import || 0), 0);
-    const pendents = multesJugador.filter(m => m.estat.toLowerCase() === "pendent").length;
 
     const div = document.createElement('div');
     div.className = 'player-card';
-    div.innerHTML = `<h3>${nom}</h3><p>Total: ${total.toFixed(2)} €</p><p>Pendents: ${pendents}</p>`;
+    div.innerHTML = `
+      <span class="player-name">${nom}</span>
+      <span class="player-amount">${total.toFixed(2)} €</span>
+    `;
     playersDiv.appendChild(div);
   });
 }
