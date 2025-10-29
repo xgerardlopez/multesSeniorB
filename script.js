@@ -1,17 +1,18 @@
-// URL del full publicat (Multes)
+// 🔗 Enllaç al Google Sheets publicat com CSV
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQUfrZ7AIsVOACiOZSEPBE7b_jfuL5TUFufgHVVze5-eeOqXRYwxbt6FGJ9TltBI2AMxVQTQ2ZE1crw/pub?gid=0&single=true&output=csv";
 
-// Carrega automàtica cada 60 segons
+// 🕐 Actualitza automàticament cada 60 segons
 carregarMultes();
 setInterval(carregarMultes, 60000);
 
+// 🔹 Carrega totes les multes del Google Sheets
 async function carregarMultes() {
   try {
     const res = await fetch(SHEET_URL);
     const text = await res.text();
-
     const rows = text.split("\n").map(r => r.split(","));
     const headers = rows.shift().map(h => h.trim());
+
     const data = rows
       .filter(r => r.length >= headers.length && r[0] !== "")
       .map(r => {
@@ -20,14 +21,21 @@ async function carregarMultes() {
         return obj;
       });
 
-    const multes = data.map(m => ({
-      jugador: m["Jugador"] || "",
-      import: parseFloat(m["Import"] || m["Import"] || 0),
-      tipus: m["Tipus"] || "",
-      comentari: m["Comentari"] || "-",
-      data: m["Data"] || "",
-      estat: m["Estat"] || "Pendent"
-    }));
+    // 🔹 Ordenem de més nova a més antiga (la data més recent primer)
+    const multes = data
+      .map(m => ({
+        jugador: m["Jugador"],
+        import: parseFloat(m["Import"] || 0),
+        tipus: m["Tipus"],
+        comentari: m["Comentari"],
+        data: m["Data"],
+        estat: m["Estat"] || "Pendent"
+      }))
+      .sort((a, b) => {
+        const da = new Date(a.data.split(" ")[0].split("/").reverse().join("-"));
+        const db = new Date(b.data.split(" ")[0].split("/").reverse().join("-"));
+        return db - da; // més noves primer
+      });
 
     window.multes = multes;
     carregarJugadors(multes);
@@ -37,6 +45,7 @@ async function carregarMultes() {
   }
 }
 
+// 🔹 Mostra el total per jugador
 function carregarJugadors(multes) {
   const playersDiv = document.getElementById('players');
   playersDiv.innerHTML = '';
@@ -48,29 +57,28 @@ function carregarJugadors(multes) {
     const total = multesJugador.reduce((acc, m) => acc + (m.import || 0), 0);
 
     const div = document.createElement('div');
-    div.className = 'player-row';
+    div.className = 'player-card';
     div.innerHTML = `
-      <div class="player-info">
-        <span class="player-name">${nom}</span>
-      </div>
-      <div class="total-fines">
-        <span class="amount">${total.toFixed(2)} €</span>
-      </div>
+      <span class="player-name">${nom}</span>
+      <div class="divider"></div>
+      <span class="player-amount">${total.toFixed(2)} €</span>
     `;
     playersDiv.appendChild(div);
   });
 }
 
+// 🔹 Mostra la taula principal
 function carregarTaula(data) {
   const tbody = document.querySelector('#taulaMultes tbody');
   tbody.innerHTML = '';
+
   data.forEach(m => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${m.jugador}</td>
-      <td>${m.import.toFixed(2)}</td>
+      <td>${m.import.toFixed(2)} €</td>
       <td>${m.tipus}</td>
-      <td>${m.comentari}</td>
+      <td>${m.comentari || '-'}</td>
       <td>${m.data}</td>
       <td>${m.estat}</td>
     `;
@@ -78,6 +86,7 @@ function carregarTaula(data) {
   });
 }
 
+// 🔹 Filtres
 function aplicarFiltres() {
   const jugador = document.getElementById('filterJugador').value.toLowerCase();
   const estat = document.getElementById('filterEstat').value.toLowerCase();
@@ -96,11 +105,11 @@ function resetFiltres() {
   carregarTaula(window.multes);
 }
 
-// Normes (pots canviar-les des de la pestanya “Normes”)
+// 🔹 Normes
 const normes = [
   { norma: "Arribar tard entreno/partit (+20min): 5€", excepcio: "Motiu justificat" },
   { norma: "Tècnica: 5€ la primera, 10€ la segona, etc. Màxim 30€", excepcio: "Cap" },
-  { norma: "No assistir sopar oficial: 10€", excepcio: "Motiu justificat" },
+  { norma: "No assistir sopar oficial: 10€.", excepcio: "Motiu justificat" },
   { norma: "No entrar espai o carpa en sopar oficial: 10€", excepcio: "Si no s'ha assistit al sopar" },
   { norma: "Deixar-se la blanca fora de casa: 15€", excepcio: "Lesionat" },
   { norma: "No assistir entreno: 5€", excepcio: "Motiu justificat" },
@@ -119,16 +128,14 @@ function carregarNormes() {
   });
 }
 
-carregarNormes(); 
+carregarNormes();
 
 // --- MODAL DETALL DE MULTES PER JUGADOR ---
-
 function mostrarDetallJugador(nom, multes) {
-  // Elimina qualsevol modal obert abans
   const existent = document.querySelector(".modal-overlay");
   if (existent) existent.remove();
 
-  const total = multes.reduce((a, m) => a + parseFloat(m.import || m.Import || 0), 0);
+  const total = multes.reduce((a, m) => a + parseFloat(m.import || 0), 0);
 
   const modal = document.createElement("div");
   modal.className = "modal-overlay";
@@ -151,19 +158,16 @@ function mostrarDetallJugador(nom, multes) {
           <tbody>
             ${multes.map(m => `
               <tr>
-                <td>${m.Tipus || m.tipus || '-'}</td>
-                <td>${(m.Comentari || m.comentari || '-')}</td>
-                <td style="text-align:right;">${parseFloat(m.Import || m.import || 0).toFixed(2)} €</td>
-                <td>${(m.Data || m.data || '').split(' ')[0]}</td>
-              </tr>
-            `).join("")}
+                <td>${m.tipus}</td>
+                <td>${m.comentari || '-'}</td>
+                <td style="text-align:right;">${parseFloat(m.import).toFixed(2)} €</td>
+                <td>${(m.data || '').split(' ')[0]}</td>
+              </tr>`).join("")}
           </tbody>
           <tfoot>
             <tr>
               <td colspan="2"><strong>Total:</strong></td>
-              <td style="text-align:right; color:#dc3545; font-weight:700;">
-                ${total.toFixed(2)} €
-              </td>
+              <td style="text-align:right; color:#dc3545; font-weight:700;">${total.toFixed(2)} €</td>
               <td></td>
             </tr>
           </tfoot>
@@ -174,11 +178,19 @@ function mostrarDetallJugador(nom, multes) {
 
   document.body.appendChild(modal);
   setTimeout(() => modal.classList.add("visible"), 10);
-
-  // Tancar amb la X o clicant fora
   modal.querySelector(".close-btn").onclick = () => modal.remove();
   modal.onclick = e => { if (e.target === modal) modal.remove(); };
 }
+
+// 🔹 Obrir modal en clicar un jugador
+document.addEventListener("click", (e) => {
+  const card = e.target.closest(".player-card, .player-row");
+  if (card && window.multes) {
+    const nom = card.querySelector(".player-name").textContent.trim();
+    const multesJugador = window.multes.filter(m => m.jugador === nom);
+    if (multesJugador.length > 0) mostrarDetallJugador(nom, multesJugador);
+  }
+});
 
 
 
