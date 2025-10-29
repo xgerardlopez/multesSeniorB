@@ -161,26 +161,36 @@ td:last-child {
 
 /* ----- RESPONSIVE ----- */
 @media (max-width: 768px) {
-  body {
-    padding: 10px;
+  html, body {
+    background-color: #f5f5f5;  /* 🔹 Manté el mateix fons a tota la pantalla */
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;          /* 🔹 Evita que el fons es talli */
   }
 
   #app {
+    background-color: white;    /* 🔹 Manté el contenidor amb fons clar */
     padding: 15px;
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
   }
 
   /* Taula principal */
   table {
     font-size: 13px;
+    width: 100%;
+    border-collapse: collapse;
   }
 
   th, td {
     padding: 10px 6px;
+    word-break: break-word;
   }
 
   th:nth-child(2),
   td:nth-child(2) {
-    min-width: 90px !important; /* 🔹 Amplia la columna "Import" */
+    min-width: 75px !important; /* 🔹 Amplia la columna "Import" */
   }
 
   .status {
@@ -190,7 +200,7 @@ td:last-child {
 
   /* Targetes de jugadors */
   .player-row {
-    flex-direction: row !important;     /* 🔹 Manté nom i import en línia */
+    flex-direction: row !important;   /* 🔹 Nom i import en línia */
     justify-content: space-between;
     align-items: center;
     gap: 8px;
@@ -209,5 +219,13 @@ td:last-child {
   .norma {
     font-size: 13px;
     padding: 12px;
+  }
+
+  /* 🔹 Ajusta el contenidor per evitar talls visuals */
+  .all-fines-section {
+    background-color: white;
+    border-radius: 8px;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
   }
 }
