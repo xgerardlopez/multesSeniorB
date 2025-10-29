@@ -2,7 +2,7 @@
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQUfrZ7AIsVOACiOZSEPBE7b_jfuL5TUFufgHVVze5-eeOqXRYwxbt6FGJ9TltBI2AMxVQTQ2ZE1crw/pub?gid=0&single=true&output=csv";
 
 // 🕐 Actualitza automàticament cada 60 segons
-carregarMultes();
+carregarMultes(); 
 setInterval(carregarMultes, 60000);
 
 async function carregarMultes() {
