@@ -10,35 +10,16 @@ async function carregarMultes() {
   try {
     const res = await fetch(SHEET_URL);
     const text = await res.text();
-
-    // 🔹 Separa les línies i elimina línies buides
-    const rows = text
-      .split("\n")
-      .filter(r => r.trim() !== "") // ✅ elimina línies buides
-      .map(r => r.split(","));
-
+    const rows = text.split("\n").map(r => r.split(","));
     const headers = rows.shift().map(h => h.trim());
 
-    // 🔹 Construeix els objectes
-    let data = rows
-      .filter(r => r.length >= headers.length && r[0].trim() !== "")
+    const data = rows
+      .filter(r => r.length >= headers.length && r[0] !== "")
       .map(r => {
         let obj = {};
-        headers.forEach((h, i) => (obj[h] = r[i] ? r[i].trim() : ""));
+        headers.forEach((h, i) => obj[h] = r[i] ? r[i].trim() : "");
         return obj;
       });
-
-    // 🔹 Inverteix l’ordre un cop net (últimes del Sheets primer)
-    data.reverse();
-
-    // 🔹 Mostra les dades
-    mostrarMultes(data);
-    mostrarJugadors(data);
-    mostrarNormes(data);
-  } catch (err) {
-    console.error("Error carregant dades:", err);
-  }
-}
 
 
     // 🔹 Ordenem de més nova a més antiga (la data més recent primer)
