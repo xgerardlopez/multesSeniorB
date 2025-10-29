@@ -20,7 +20,6 @@ async function carregarMultes() {
         headers.forEach((h, i) => obj[h] = r[i] ? r[i].trim() : "");
         return obj;
       });
-    data = data.reverse();
 
     // 🔹 Ordenem de més nova a més antiga (la data més recent primer)
     const multes = data
