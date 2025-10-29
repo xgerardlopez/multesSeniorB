@@ -30,36 +30,65 @@ h2, h3 {
 }
 
 /* ----- MULTES PER JUGADOR ----- */
+/* ----- MULTES PER JUGADOR (CAPSES) ----- */
 #players {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  margin-top: 15px;
 }
 
-.player-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.player-card {
+  background: #1e1e1e;
+  color: #fff;
   padding: 14px 18px;
-  background: #f8f9fa;
-  border-radius: 10px;
-  transition: all 0.2s ease;
-  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  width: 100%;
 }
 
-.player-row:hover {
-  background: #e9ecef;
-  transform: translateY(-1px);
+.player-card:hover {
+  background: #2c2c2c;
+  transform: translateY(-2px);
 }
 
 .player-name {
-  font-weight: 600;
-  color: #212529;
+  font-weight: 500;
+  letter-spacing: 0.3px;
 }
 
-.amount {
-  font-weight: 700;
-  color: #495057;
+.divider {
+  flex: 1;
+  border-bottom: 1px dashed rgba(255,255,255,0.2);
+  margin: 0 10px;
+}
+
+.player-amount {
+  font-weight: 600;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+/* Responsive: text i imports un al costat de l’altre */
+@media (max-width: 768px) {
+  .player-card {
+    flex-direction: row;
+    font-size: 15px;
+    padding: 12px 15px;
+  }
+
+  .divider {
+    margin: 0 6px;
+  }
+
+  .player-amount {
+    font-size: 14px;
+  }
 }
 
 /* ----- TAULA PRINCIPAL (Totes les multes) ----- */
