@@ -169,6 +169,7 @@ td:last-child {
     padding: 15px;
   }
 
+  /* Taula principal */
   table {
     font-size: 13px;
   }
@@ -177,15 +178,36 @@ td:last-child {
     padding: 10px 6px;
   }
 
+  th:nth-child(2),
+  td:nth-child(2) {
+    min-width: 90px !important; /* 🔹 Amplia la columna "Import" */
+  }
+
   .status {
     font-size: 11px;
     padding: 4px 8px;
   }
 
+  /* Targetes de jugadors */
   .player-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
+    flex-direction: row !important;     /* 🔹 Manté nom i import en línia */
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .player-name {
+    font-size: 16px;
+  }
+
+  .amount {
+    font-size: 16px;
+    color: #495057;
+  }
+
+  /* Normes */
+  .norma {
+    font-size: 13px;
+    padding: 12px;
   }
 }
-
