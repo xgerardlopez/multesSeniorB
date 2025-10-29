@@ -4,661 +4,16 @@
     <meta charset="utf-8" />
     <title>Multes SeniorB</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          sans-serif;
-        margin: 0;
-        padding: 20px;
-        background-color: #f5f5f5;
-      }
-
-      #app {
-        max-width: 1200px;
-        margin: 0 auto;
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      h1 {
-        color: #333;
-        text-align: center;
-        margin-bottom: 30px;
-      }
-
-      button {
-        background: #007bff;
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 16px;
-        margin-bottom: 20px;
-      }
-
-      button:hover {
-        background: #0056b3;
-      }
-
-      button:disabled {
-        background: #6c757d;
-        cursor: not-allowed;
-      }
-
-      .error {
-        color: #dc3545;
-        background: #f8d7da;
-        padding: 10px;
-        border-radius: 4px;
-        margin: 10px 0;
-      }
-
-      /* Tabla de jugadores */
-      .players-table {
-        margin-top: 20px;
-      }
-
-      .player-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px;
-        border: 1px solid #e9ecef;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        background: white;
-      }
-
-      .player-row:hover {
-        background: #f8f9fa;
-        border-color: #007bff;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
-      }
-
-      .player-info {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-      }
-
-      .player-avatar {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 3px solid #e9ecef;
-      }
-
-      .player-name {
-        font-size: 18px;
-        font-weight: 600;
-        color: #333;
-      }
-
-      .total-fines {
-        text-align: right;
-      }
-
-      .amount {
-        font-size: 20px;
-        font-weight: 700;
-        display: block;
-      }
-
-      .amount.low {
-        color: #6c757d; /* Gris para 0-10€ */
-      }
-
-      .amount.medium {
-        color: #ffc107; /* Amarillo para 11-25€ */
-      }
-
-      .amount.high {
-        color: #fd7e14; /* Naranja para 26-40€ */
-      }
-
-      .amount.critical {
-        color: #dc3545; /* Rojo para 41€+ */
-      }
-
-      .count {
-        font-size: 14px;
-        color: #6c757d;
-      }
-
-      /* Modal/Popup */
-      .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-      }
-
-      .modal-content {
-        background: white;
-        border-radius: 8px;
-        width: 80%;
-        max-width: 80%;
-        max-height: 90vh;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      }
-
-      .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px;
-        border-bottom: 1px solid #e9ecef;
-        background: #f8f9fa;
-      }
-
-      .modal-header h3 {
-        margin: 0;
-        color: #333;
-      }
-
-      .close-btn {
-        background: none;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        color: #6c757d;
-        padding: 0;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-      }
-
-      .close-btn:hover {
-        background: #e9ecef;
-        color: #333;
-      }
-
-      .modal-body {
-        padding: 20px;
-        overflow-y: auto;
-        max-height: 60vh;
-      }
-
-      /* Tabla de multas */
-      .fines-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-      }
-
-      .fines-table th,
-      .fines-table td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #e9ecef;
-      }
-
-      .fines-table th {
-        background: #f8f9fa;
-        font-weight: 600;
-        color: #495057;
-      }
-
-      .fines-table tbody tr:hover {
-        background: #f8f9fa;
-      }
-
-      .status {
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
-      }
-
-      .status.pendent {
-        background: #fff3cd;
-        color: #856404;
-      }
-
-      .status.pagada {
-        background: #d4edda;
-        color: #155724;
-      }
-
-      .status.anulada {
-        background: #f8d7da;
-        color: #721c24;
-      }
-
-      .total {
-        font-size: 18px;
-        color: #dc3545;
-      }
-
-      /* Tabla de todas las multas con filtros */
-      .all-fines-section,
-      .normes-section {
-        margin-top: 40px;
-        padding: 0 10px;
-      }
-
-      .norma {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        margin-bottom: 10px;
-        font-size: 14px;
-        color: #6c757d;
-        border-radius: 4px;
-        padding: 10px;
-        border: 1px solid #e9ecef;
-      }
-
-      .norma .exception {
-        font-size: 10px;
-        color: #721c24;
-        border-radius: 10px;
-        padding: 2px 5px;
-        border: 1px solid #daacaf;
-        background: #f8d7da;
-        min-width: 75px;
-      }
-
-      .section-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-      }
-
-      .section-header h3 {
-        margin: 0;
-      }
-
-      .toggle-filters-btn {
-        background: transparent;
-        color: #6c757d;
-        border: 1px solid #dee2e6;
-        padding: 6px 12px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 12px;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        background: #f8f9fa;
-      }
-
-      .toggle-filters-btn:hover {
-        background: #e9ecef;
-        border-color: #adb5bd;
-        color: #495057;
-      }
-
-      .toggle-filters-btn.expanded {
-        background: #007bff;
-        color: white;
-        border-color: #007bff;
-      }
-
-      .toggle-filters-btn.expanded:hover {
-        background: #0056b3;
-        border-color: #0056b3;
-      }
-
-      .filters-container {
-        display: flex;
-        gap: 15px;
-        flex-wrap: wrap;
-        align-items: center;
-        max-height: 0;
-        overflow: hidden;
-        opacity: 0;
-        transition: all 0.3s ease;
-      }
-
-      .filters-container.visible {
-        max-height: 200px;
-        opacity: 1;
-        margin-bottom: 20px;
-      }
-
-      .filter-group {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-      }
-
-      .filter-group label {
-        font-size: 12px;
-        font-weight: 600;
-        color: #495057;
-      }
-
-      .filter-group input,
-      .filter-group select {
-        padding: 8px 12px;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-        font-size: 14px;
-        min-width: 120px;
-      }
-
-      .filter-group input:focus,
-      .filter-group select:focus {
-        outline: none;
-        border-color: #007bff;
-        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-      }
-
-      .all-fines-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        background: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      .table-container {
-        overflow-x: auto;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
-      }
-
-      .all-fines-table th,
-      .all-fines-table td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #e9ecef;
-      }
-
-      /* Columnas específicas con min-width */
-      .all-fines-table th:nth-child(3),
-      .all-fines-table td:nth-child(3) {
-        min-width: 150px; /* Tipus de multa */
-      }
-
-      .all-fines-table th:nth-child(4),
-      .all-fines-table td:nth-child(4) {
-        min-width: 200px; /* Comentari */
-        font-size: 10px; /* Font-size más pequeño */
-      }
-
-      .all-fines-table th:nth-child(2),
-      .all-fines-table td:nth-child(2) {
-        min-width: 70px; /* Import */
-      }
-
-      .all-fines-table th {
-        background: #f8f9fa;
-        font-weight: 600;
-        color: #495057;
-        position: sticky;
-        top: 0;
-        z-index: 10;
-      }
-
-      .all-fines-table tbody tr:hover {
-        background: #f8f9fa;
-      }
-
-      .all-fines-table .amount {
-        text-align: right;
-        font-weight: 600;
-      }
-
-      .all-fines-table .status {
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
-        text-align: center;
-      }
-
-      .all-fines-table .status.pendiente {
-        background: #fff3cd;
-        color: #856404;
-      }
-
-      .all-fines-table .status.pagada {
-        background: #d4edda;
-        color: #155724;
-      }
-
-      .all-fines-table .status.anulada {
-        background: #f8d7da;
-        color: #721c24;
-      }
-
-      .clear-filters-btn {
-        background: #6c757d;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 14px;
-        margin-left: auto;
-      }
-
-      .clear-filters-btn:hover {
-        background: #5a6268;
-      }
-
-      @media (max-width: 768px) {
-        #app {
-          padding: 15px;
-          margin: 10px;
-        }
-
-        h1 {
-          font-size: 24px;
-          margin-bottom: 20px;
-        }
-
-        h3 {
-          font-size: 18px;
-          margin-bottom: 15px;
-        }
-
-        .player-row {
-          flex-direction: row;
-          text-align: left;
-          gap: 15px;
-          padding: 15px;
-          margin-bottom: 10px;
-          align-items: center;
-        }
-
-        .player-info {
-          flex-direction: row;
-          gap: 12px;
-          flex: 1;
-        }
-
-        .player-avatar {
-          width: 50px;
-          height: 50px;
-        }
-
-        .player-name {
-          font-size: 16px;
-        }
-
-        .total-fines {
-          text-align: right;
-          flex-shrink: 0;
-        }
-
-        .amount {
-          font-size: 18px;
-        }
-
-        .count {
-          font-size: 12px;
-        }
-
-        .modal-content {
-          margin: 20px;
-          width: 98%;
-          max-width: 98%;
-          max-height: calc(100vh - 40px);
-        }
-
-        .modal-header {
-          padding: 15px;
-        }
-
-        .modal-header h3 {
-          font-size: 18px;
-        }
-
-        .modal-body {
-          padding: 15px;
-          max-height: 50vh;
-        }
-
-        .fines-table {
-          font-size: 12px;
-        }
-
-        .fines-table th,
-        .fines-table td {
-          padding: 6px 4px;
-          font-size: 12px;
-        }
-
-        .fines-table th {
-          font-size: 11px;
-        }
-
-        .filters-container {
-          flex-direction: column;
-          align-items: stretch;
-        }
-
-        .filter-group {
-          min-width: auto;
-        }
-
-        .filter-group input,
-        .filter-group select {
-          min-width: auto;
-        }
-
-        .clear-filters-btn {
-          margin-left: 0;
-          margin-top: 10px;
-        }
-
-        .all-fines-table {
-          font-size: 12px;
-          min-width: 600px; /* Asegura que la tabla tenga un ancho mínimo */
-        }
-
-        .all-fines-table th,
-        .all-fines-table td {
-          padding: 8px 6px;
-          font-size: 12px;
-        }
-
-        .table-container {
-          margin: 10px -10px; /* Extiende el scroll horizontal */
-        }
-      }
-
-      @media (max-width: 480px) {
-        #app {
-          padding: 10px;
-          margin: 5px;
-        }
-
-        .player-row {
-          padding: 12px 8px;
-          gap: 10px;
-        }
-
-        .player-info {
-          gap: 8px;
-        }
-
-        .player-avatar {
-          width: 45px;
-          height: 45px;
-        }
-
-        .player-name {
-          font-size: 15px;
-        }
-
-        .amount {
-          font-size: 16px;
-        }
-
-        .count {
-          font-size: 11px;
-        }
-
-        .fines-table {
-          font-size: 11px;
-        }
-
-        .fines-table th,
-        .fines-table td {
-          padding: 4px 2px;
-          font-size: 11px;
-        }
-
-        .all-fines-table {
-          min-width: 500px;
-        }
-
-        .section-header {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 10px;
-        }
-
-        .toggle-filters-btn {
-          padding: 4px 8px;
-          font-size: 11px;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="app">
-      <div style="text-align: center">
-        <img
-          style="width: 150px; height: 150px; object-fit: contain"
-          src="https://res.cloudinary.com/srourera/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1756555944/minguella/agrupacio-esportiva-minguella-escut_eri68n.jpg"
-        />
-      </div>
       <h1>Multes SeniorB</h1>
 
       <div v-if="parsedData.length" id="app-content" style="visibility: hidden">
         <div v-if="error" class="error">Error: {{ error }}</div>
         <h3>Multes per Jugador</h3>
 
-        <!-- Tabla agrupada por jugador -->
+        <!-- Jugadors -->
         <div class="players-table">
           <div
             v-for="player in playersWithFines"
@@ -671,28 +26,18 @@
               <span class="player-name">{{ player.name }}</span>
             </div>
             <div class="total-fines">
-              <span :class="['amount', getAmountClass(player.totalFines)]"
-                >{{ player.totalFines.toFixed(2) }} €</span
-              >
+              <span :class="['amount', getAmountClass(player.totalFines)]">
+                {{ player.totalFines.toFixed(2) }} €
+              </span>
               <span class="count">({{ player.pendingCount }} multes)</span>
             </div>
           </div>
         </div>
 
-        <!-- Listado de todas las multas con filtros -->
+        <!-- Totes les multes -->
         <div class="all-fines-section">
-          <div class="section-header" style="margin: 0">
-            <h3 style="display: flex; flex-direction: column">
-              Totes les Multes
-              <a
-                style="color: #ccc; font-size: 12px; margin: 0px"
-                href="https://docs.google.com/spreadsheets/d/1fkCpZgF1BCl-_lOsB4O-MGofvkw6NBYAUIGd3aYWOyI/edit?gid=0#gid=0"
-                target="_blank"
-                >Excel</a
-              >
-            </h3>
-
-            <!-- Botón para mostrar/ocultar filtros -->
+          <div class="section-header">
+            <h3>Totes les Multes</h3>
             <button
               @click="toggleFilters"
               class="toggle-filters-btn"
@@ -703,39 +48,27 @@
             </button>
           </div>
 
-          <!-- Filtros -->
+          <!-- Filtres -->
           <div class="filters-container" :class="{ 'visible': filtersVisible }">
             <div class="filter-group">
               <label>Jugador</label>
-              <input
-                v-model="filters.jugador"
-                type="text"
-                placeholder="Filtrar per jugador..."
-              />
+              <input v-model="filters.jugador" type="text" placeholder="Filtrar per jugador..." />
             </div>
 
             <div class="filter-group">
-              <label>Tipus de Multa</label>
-              <input
-                v-model="filters.tipodemulta"
-                type="text"
-                placeholder="Filtrar per tipus..."
-              />
+              <label>Tipus</label>
+              <input v-model="filters.tipodemulta" type="text" placeholder="Filtrar per tipus..." />
             </div>
 
             <div class="filter-group">
               <label>Comentari</label>
-              <input
-                v-model="filters.comment"
-                type="text"
-                placeholder="Filtrar per comentari..."
-              />
+              <input v-model="filters.comment" type="text" placeholder="Filtrar per comentari..." />
             </div>
 
             <div class="filter-group">
               <label>Estat</label>
               <select v-model="filters.status">
-                <option value="">Tots els estats</option>
+                <option value="">Tots</option>
                 <option value="pendent">Pendent</option>
                 <option value="pagada">Pagada</option>
                 <option value="anulada">Anulada</option>
@@ -757,14 +90,14 @@
             </button>
           </div>
 
-          <!-- Tabla de todas las multas -->
+          <!-- Taula -->
           <div class="table-container">
             <table class="all-fines-table">
               <thead>
                 <tr>
                   <th>Jugador</th>
                   <th>Import</th>
-                  <th>Tipus de Multa</th>
+                  <th>Tipus</th>
                   <th>Comentari</th>
                   <th>Data</th>
                   <th>Estat</th>
@@ -776,9 +109,7 @@
                   :key="fine.jugador + fine.tipodemulta + fine.fechacreacion"
                 >
                   <td>{{ fine.jugador }}</td>
-                  <td class="amount" style="color: #6c757d">
-                    {{ fine.precio.toFixed(2) }} €
-                  </td>
+                  <td class="amount">{{ fine.precio.toFixed(2) }} €</td>
                   <td>{{ fine.tipodemulta }}</td>
                   <td>{{ fine.comment }}</td>
                   <td>{{ formatDateForDisplay(fine.fechacreacion) }}</td>
@@ -793,77 +124,15 @@
                 <tr>
                   <td colspan="1"><strong>Total:</strong></td>
                   <td class="amount total">
-                    <strong style="color: black"
-                      >{{ totalFilteredFines.toFixed(2) }} €</strong
-                    >
+                    <strong style="color: black">{{ totalFilteredFines.toFixed(2) }} €</strong>
                   </td>
-                  <td colspan="2"></td>
                 </tr>
               </tfoot>
             </table>
           </div>
-
-          <!-- Popup de detalle de multas -->
-          <div
-            v-if="selectedPlayer"
-            class="modal-overlay"
-            @click="closePlayerDetails"
-          >
-            <div class="modal-content" @click.stop>
-              <div class="modal-header">
-                <h3>Multes de {{ selectedPlayer.name }}</h3>
-                <button class="close-btn" @click="closePlayerDetails">
-                  &times;
-                </button>
-              </div>
-              <div class="modal-body">
-                <table class="fines-table">
-                  <thead>
-                    <tr>
-                      <th>Tipus de Multa</th>
-                      <th>Comentari</th>
-                      <th>Import</th>
-                      <th>Data</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      v-for="fine in selectedPlayer.fines"
-                      :key="fine.tipodemulta + fine.fechacreacion"
-                    >
-                      <td style="font-size: 10px">{{ fine.tipodemulta }}</td>
-                      <td style="font-size: 10px">{{ fine.comment }}</td>
-                      <td
-                        style="font-size: 10px; text-align: right"
-                        class="amount"
-                      >
-                        {{ fine.precio.toFixed(2) }} €
-                      </td>
-                      <td style="font-size: 10px">
-                        {{ formatDateForDisplay(fine.fechacreacion) }}
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <td colspan="2"><strong>Total:</strong></td>
-                      <td
-                        style="text-align: right"
-                        :class="['amount', 'total', getAmountClass(selectedPlayer.totalFines)]"
-                      >
-                        <strong
-                          >{{ selectedPlayer.totalFines.toFixed(2) }} €</strong
-                        >
-                      </td>
-                      <td colspan="2"></td>
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
-            </div>
-          </div>
         </div>
 
+        <!-- Normes -->
         <div class="normes-section">
           <h3>Normes</h3>
           <div v-for="(norma, index) in normes" :key="index" class="norma">
@@ -874,276 +143,10 @@
           </div>
         </div>
       </div>
-      <!-- PapaParse para CSV robusto -->
-      <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-      <!-- Vue 3 por CDN -->
-      <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-
-      <script>
-        const { createApp } = Vue;
-
-        // 🔧 Sustituye por tu Sheet y pestaña
-        // 🟢 CONFIGURACIÓ ADAPTADA AL TEU FULL (Senior B)
-        const SHEET_ID = "1un2vHvkFn8V9T9JQkDYhDu_WYGXY584ilDuACKzt-Ak";
-        const GID = "0";
-        const MULTES_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
-
-        const JUGADORS_URL = `https://docs.google.com/spreadsheets/d/e/2PACX-1vQUfrZ7AIsVOACiOZSEPBE7b_jfuL5TUFufgHVVze5-eeOqXRYwxbt6FGJ9TltBI2AMxVQTQ2ZE1crw/pub?gid=1534873034&single=true&output=csv`;
-        const NORMES_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQUfrZ7AIsVOACiOZSEPBE7b_jfuL5TUFufgHVVze5-eeOqXRYwxbt6FGJ9TltBI2AMxVQTQ2ZE1crw/pub?gid=666064212&single=true&output=csv';
-
-        // 🔢 Conversió d'import (suporta “5,00” i “5.00”)
-        const parsePrice = (v) => {
-        if (v == null) return 0;
-        const s = String(v).trim().replace(/[€\s]/g, "").replace(",", ".");
-        const n = parseFloat(s);
-        return Number.isFinite(n) ? n : 0;
-        };
-
-        const parseDate = (v) => String(v || "").split(" ")[0];
-
-        // 🧩 Funció per llegir les multes del teu format concret
-        function rowsToObjects(papaResult) {
-          const rows = papaResult.data || [];
-          if (!rows.length) return [];
-
-          return rows.map((r) => ({
-            jugador: r["Jugador"] || "",
-            tipodemulta: r["Tipus"] || "",
-            precio: parsePrice(r["Import"] || "0"),
-            comment: r["Comentari"] || "",
-            fechacreacion: parseDate(r["Data"] || ""),
-            status: (r["Estat"] || "Pendent").toLowerCase(),
-          }));
-        }
-
-        // --- Funció per convertir les files de Jugadors ---
-        function rowsToPlayers(papaResult) {
-          const rows = papaResult.data || [];
-          if (!rows.length) return [];
-          return rows.map((r) => ({
-          Nom: r["Nom"] || r["Jugador"] || "",
-          Foto: r["Foto"] || "",
-          }));
-        }
-        // --- NORMES ---
-        function rowsToNormes(papaResult) {
-          const rows = papaResult.data || [];
-          if (!rows.length) return [];
-          return rows.map((r) => ({
-          norma: r["Norma"] || "",
-          excepcio: r["Excepcio"] || "",
-          }));
-        }
-        createApp({
-          data() {
-            return {
-              loading: false,
-              error: "",
-              parsedData: [],
-              players: [],
-              normes: [],
-              selectedPlayer: null, // Para el popup de detalle
-              filters: {
-                jugador: "",
-                tipodemulta: "",
-                comment: "",
-                status: "pendent",
-                fechaDesde: "",
-                fechaHasta: "",
-              },
-              filtersVisible: false,
-            };
-          },
-          computed: {
-            playersWithFines() {
-              const playersMap = {};
-              this.players.forEach((player) => {
-                playersMap[player.Nom] = {
-                  name: player.Nom,
-                  img: player.Foto,
-                  fines: [],
-                  totalFines: 0,
-                  pendingCount: 0,
-                };
-              });
-
-              // Procesar las multas existentes
-              this.parsedData.forEach((fine) => {
-                const playerName = fine.jugador;
-                // Solo procesar si el jugador está en PLAYERS
-                if (playersMap[playerName]) {
-                  // Solo agregar multas pendientes al array de multas
-                  if (fine.status.toLowerCase() === "pendent") {
-                    playersMap[playerName].fines.push(fine);
-                    playersMap[playerName].pendingCount++;
-                    playersMap[playerName].totalFines += fine.precio;
-                  }
-                }
-              });
-
-              // Retornar todos los jugadores ordenados por multa total
-              return Object.values(playersMap).sort(
-                (a, b) => b.totalFines - a.totalFines
-              );
-            },
-            reversedFilteredAllFines() {
-              return [...this.filteredAllFines].reverse();
-            },
-            filteredAllFines() {
-              return this.parsedData.filter((fine) => {
-                // Filtro por jugador
-                if (
-                  this.filters.jugador &&
-                  !fine.jugador
-                    .toLowerCase()
-                    .includes(this.filters.jugador.toLowerCase())
-                ) {
-                  return false;
-                }
-
-                // Filtro por tipo de multa
-                if (
-                  this.filters.tipodemulta &&
-                  !fine.tipodemulta
-                    .toLowerCase()
-                    .includes(this.filters.tipodemulta.toLowerCase())
-                ) {
-                  return false;
-                }
-
-                // Filtro por comentario
-                if (
-                  this.filters.comment &&
-                  !fine.comment
-                    .toLowerCase()
-                    .includes(this.filters.comment.toLowerCase())
-                ) {
-                  return false;
-                }
-
-                // Filtro por estado
-                if (
-                  this.filters.status &&
-                  fine.status.toLowerCase() !==
-                    this.filters.status.toLowerCase()
-                ) {
-                  return false;
-                }
-
-                // Filtro por fecha desde
-                if (
-                  this.filters.fechaDesde &&
-                  fine.fechacreacion < this.filters.fechaDesde
-                ) {
-                  return false;
-                }
-
-                // Filtro por fecha hasta
-                if (
-                  this.filters.fechaHasta &&
-                  fine.fechacreacion > this.filters.fechaHasta
-                ) {
-                  return false;
-                }
-
-                return true;
-              });
-            },
-
-            totalFilteredFines() {
-              return this.filteredAllFines.reduce(
-                (total, fine) => total + fine.precio,
-                0
-              );
-            },
-          },
-          methods: {
-            async loadNormes() {
-              try {
-                const res = await fetch(NORMES_URL);
-                if (!res.ok) throw new Error("HTTP " + res.status);
-                const text = await res.text();
-                const papa = Papa.parse(text, {
-                  header: true,
-                  skipEmptyLines: true,
-                });
-                this.normes = papa.data;
-              } catch (e) {
-                this.error = String(e);
-              }
-            },
-            async loadPlayers() {
-              try {
-                const res = await fetch(JUGADORS_URL);
-                if (!res.ok) throw new Error("HTTP " + res.status);
-                const text = await res.text();
-                const papa = Papa.parse(text, {
-                  header: true,
-                  skipEmptyLines: true,
-                });
-                this.players = papa.data;
-              } catch (e) {
-                this.error = String(e);
-              }
-            },
-            async load() {
-              this.loading = true;
-              this.error = "";
-              try {
-                const res = await fetch(MULTES_URL, { cache: "no-store" });
-                if (!res.ok) throw new Error("HTTP " + res.status);
-                const text = await res.text();
-                const papa = Papa.parse(text, {
-                  header: true,
-                  skipEmptyLines: true,
-                });
-                this.parsedData = rowsToObjects(papa);
-                await this.loadPlayers();
-                this.loadNormes();
-              } catch (e) {
-                this.error = String(e);
-              } finally {
-                this.loading = false;
-              }
-            },
-            showPlayerDetails(player) {
-              this.selectedPlayer = player;
-            },
-            closePlayerDetails() {
-              this.selectedPlayer = null;
-            },
-            formatDateForDisplay(dateString) {
-              return dateString; //.slice(0, 10);
-            },
-
-            clearFilters() {
-              this.filters = {
-                jugador: "",
-                tipodemulta: "",
-                comment: "",
-                status: "Pendent",
-                fechaDesde: "",
-                fechaHasta: "",
-              };
-            },
-
-            toggleFilters() {
-              this.filtersVisible = !this.filtersVisible;
-            },
-
-            getAmountClass(amount) {
-              if (amount <= 10) return "low";
-              if (amount <= 25) return "medium";
-              if (amount <= 40) return "high";
-              return "critical";
-            },
-          },
-          async mounted() {
-            await this.load();
-            document.getElementById("app-content").style.visibility = "visible";
-          },
-        }).mount("#app");
-      </script>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
