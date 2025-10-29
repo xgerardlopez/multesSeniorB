@@ -393,22 +393,23 @@ td:last-child {
   to { transform: translateY(0); opacity: 1; }
 }
 /* ----- TAULA RESPONSIVE (scroll horitzontal) ----- */
+/* ----- TAULA RESPONSIVE (scroll horitzontal) ----- */
 .table-container {
-  overflow-x: auto;
+  overflow-x: auto;         /* ✅ permet desplaçar-se horitzontalment */
+  overflow-y: hidden;       /* evita barra vertical innecessària */
   width: 100%;
   margin-top: 10px;
   padding-bottom: 10px;
+  -webkit-overflow-scrolling: touch; /* ✅ fa el scroll suau a mòbil */
 }
 
 #taulaMultes {
-  min-width: 700px;
-  border-collapse: collapse;
+  min-width: 700px;         /* ✅ només apareix scroll si és més ampla */
   width: 100%;
+  border-collapse: collapse;
+  box-sizing: border-box;
 }
 
-#taulaMultes th, #taulaMultes td {
-  padding: 10px 12px;
-}
 
 @media (max-width: 768px) {
   .table-container {
