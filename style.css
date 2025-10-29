@@ -60,7 +60,7 @@ h2 {
   letter-spacing: 1px;
 }
 
-/* --- LLISTA DE JUGADORS --- */
+/* --- ESTIL JUGADORS (RECTANGLES HORITZONTALS AMB DIVISIÓ) --- */
 .players {
   display: flex;
   flex-direction: column;
@@ -71,30 +71,41 @@ h2 {
 }
 
 .player-card {
-  background-color: var(--bg-card);
-  border-radius: var(--border-radius);
+  background-color: #141414;
+  border-radius: 10px;
   padding: 16px 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: var(--transition);
-  border: 1px solid var(--border-color);
+  transition: 0.25s ease;
+  border: 1px solid #222;
 }
 
 .player-card:hover {
-  background-color: var(--bg-hover);
+  background-color: #1a1a1a;
 }
 
 .player-name {
   font-size: 18px;
   font-weight: 500;
+  flex: 1;
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background-color: #2a2a2a;
+  margin: 0 15px;
 }
 
 .player-amount {
   font-size: 18px;
   font-weight: 600;
-  color: var(--text-light);
+  color: #e6e6e6;
+  text-align: right;
+  min-width: 100px;
 }
+
 
 /* --- TAULA DE MULTES --- */
 table {
