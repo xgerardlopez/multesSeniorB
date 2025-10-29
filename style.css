@@ -29,8 +29,7 @@ h2, h3 {
   color: #333;
 }
 
-/* ----- MULTES PER JUGADOR ----- */
-/* ----- MULTES PER JUGADOR (CAPSES) ----- */
+/* ----- MULTES PER JUGADOR (CAPSES GRIS CLAR) ----- */
 #players {
   display: flex;
   flex-direction: column;
@@ -39,8 +38,8 @@ h2, h3 {
 }
 
 .player-card {
-  background: #1e1e1e;
-  color: #fff;
+  background: #f8f9fa; /* gris molt clar */
+  color: #212529;      /* text fosc */
   padding: 14px 18px;
   border-radius: 12px;
   display: flex;
@@ -50,11 +49,14 @@ h2, h3 {
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   width: 100%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  border: 1px solid #e9ecef;
 }
 
 .player-card:hover {
-  background: #2c2c2c;
+  background: #e9ecef; /* lleugerament més fosc en hover */
   transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
 .player-name {
@@ -64,7 +66,7 @@ h2, h3 {
 
 .divider {
   flex: 1;
-  border-bottom: 1px dashed rgba(255,255,255,0.2);
+  border-bottom: 1px dashed rgba(0,0,0,0.15);
   margin: 0 10px;
 }
 
@@ -72,9 +74,10 @@ h2, h3 {
   font-weight: 600;
   font-size: 15px;
   white-space: nowrap;
+  color: #495057;
 }
 
-/* Responsive: text i imports un al costat de l’altre */
+/* Responsive */
 @media (max-width: 768px) {
   .player-card {
     flex-direction: row;
