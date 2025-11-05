@@ -128,6 +128,7 @@ const normes = [
   { norma: "No assistir sopar oficial: 10€", excepcio: "Motiu justificat" },
   { norma: "No entrar espai o carpa en sopar oficial: 10€", excepcio: "Motiu justificat" },
   { norma: "Deixar-se la blanca: Partit 10€ | Entreno 2€", excepcio: "Lesionat" },
+  { norma: "No assistir partit: 20€", excepcio: "Motiu justificat" },
   { norma: "No assistir entreno: 5€", excepcio: "Motiu justificat" },
   { norma: "No assistir físic: 3€", excepcio: "Motiu justificat" },
   { norma: "Fallar oráculo: 1€ per jugador fallat", excepcio: "Cap" }, 
