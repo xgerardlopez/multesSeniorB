@@ -122,18 +122,17 @@ function resetFiltres() {
 
 // 🔹 Normes
 const normes = [
-  { norma: "Tard entreno: 1€ + 1€ cada 5min", excepcio: "Motiu justificat" },
-  { norma: "Tard partit: 1€ + 1€ cada 5min", excepcio: "Motiu justificat" },
-  { norma: "Tècnica: 5€ la primera, 10€ la segona, etc...", excepcio: "Cap" },
-  { norma: "No assistir sopar oficial: 10€", excepcio: "Motiu justificat" },
-  { norma: "No entrar espai o carpa en sopar oficial: 10€", excepcio: "Motiu justificat" },
-  { norma: "Deixar-se la blanca: Partit 10€ | Entreno 2€", excepcio: "Lesionat" },
+  { norma: "Tard entreno/partit: 1€ + 1€ cada 5min", excepcio: "Motiu justificat" },
   { norma: "No assistir partit: 20€", excepcio: "Motiu justificat" },
   { norma: "No assistir entreno: 5€", excepcio: "Motiu justificat" },
   { norma: "No assistir físic: 3€", excepcio: "Motiu justificat" },
-  { norma: "Fallar oráculo: 1€ per jugador fallat", excepcio: "Cap" }, 
+  { norma: "Deixar-se la blanca: Partit 10€ | Entreno 1€", excepcio: "Lesionat" },
+  { norma: "Tècnica: 5€ la primera, 10€ la segona, etc...", excepcio: "Cap" },
   { norma: "Aigua en tir lliure: 5€", excepcio: "Cap" }, 
-  { norma: "Fallar entrada sol (partit): 1€", excepcio: "Cap" }
+  { norma: "Fallar entrada sol (partit): 1€", excepcio: "Cap" },
+  { norma: "Fallar oráculo: 1€ per jugador fallat", excepcio: "Cap" },
+  { norma: "No assistir sopar oficial: 10€", excepcio: "Motiu justificat" },
+  { norma: "No anar Carpa/Espai en sopar oficial: 10€", excepcio: "Motiu justificat" }
 ];
 
 function carregarNormes() {
