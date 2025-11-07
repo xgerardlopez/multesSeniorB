@@ -425,3 +425,41 @@ td:last-child {
   }
 }
 
+.tipus-multa.clicable {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #007bff;
+}
+
+.comentari-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.comentari-content {
+  background: #fff;
+  border-radius: 10px;
+  padding: 18px 22px;
+  max-width: 80%;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  font-size: 15px;
+  line-height: 1.5;
+  color: #333;
+  text-align: center;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+
