@@ -462,4 +462,14 @@ td:last-child {
   to { opacity: 1; transform: scale(1); }
 }
 
+excel-link {
+  font-size: 14px;
+  color: #b5b5b5;          /* gris suau */
+  text-decoration: underline;
+  margin-top: 4px;
+  cursor: pointer;
+}
 
+.excel-link:hover {
+  color: #7a7a7a;          /* una mica més fosc al passar el cursor */
+}
