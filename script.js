@@ -175,7 +175,9 @@ function mostrarDetallJugador(nom, multes) {
           <tbody>
             ${multes.map(m => `
               <tr>
-                <td class="tipus-multa" data-comentari="${m.comentari || ''}">${m.tipus}</td>
+                <td class="tipus-multa ${m.comentari ? 'clicable' : ''}" data-comentari="${m.comentari || ''}">
+                  ${m.tipus}
+                </td>
                 <td style="text-align:right;">${parseFloat(m.import).toFixed(2)} €</td>
                 <td>${(m.data || '').split(' ')[0]}</td>
               </tr>`).join("")}
@@ -208,16 +210,28 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// 🔹 En clicar el tipus, mostra el comentari corresponent
-modal.querySelectorAll(".tipus-multa").forEach(td => {
-  td.addEventListener("click", () => {
-    const comentari = td.dataset.comentari.trim();
-    if (comentari) {
-      alert(`💬 Comentari: ${comentari}`);
-    } else {
-      alert("Aquest tipus de multa no té cap comentari.");
-    }
+  // 🔹 Obrir finestra emergent amb comentari (només si existeix)
+  modal.querySelectorAll(".tipus-multa.clicable").forEach(td => {
+    td.addEventListener("click", () => {
+      const comentari = td.dataset.comentari.trim();
+      if (!comentari) return;
+
+      const popup = document.createElement("div");
+      popup.className = "comentari-popup";
+      popup.innerHTML = `
+        <div class="comentari-content">
+          <p>${comentari}</p>
+        </div>
+      `;
+      document.body.appendChild(popup);
+
+      // Tancar clicant fora
+      popup.addEventListener("click", e => {
+        if (e.target === popup) popup.remove();
+      });
   });
+
+
 });
 
 
