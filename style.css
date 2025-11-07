@@ -463,13 +463,10 @@ td:last-child {
 }
 
 excel-link {
-  font-size: 14px;
-  color: #b5b5b5;          /* gris suau */
+  font-size: 10px;
+  color: #000;          /* gris suau */
   text-decoration: underline;
-  margin-top: 4px;
+  margin-top: 2px;
   cursor: pointer;
 }
 
-.excel-link:hover {
-  color: #7a7a7a;          /* una mica més fosc al passar el cursor */
-}
