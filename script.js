@@ -168,7 +168,6 @@ function mostrarDetallJugador(nom, multes) {
           <thead>
             <tr>
               <th>Tipus</th>
-              <th>Comentari</th>
               <th>Import</th>
               <th>Data</th>
             </tr>
@@ -176,8 +175,7 @@ function mostrarDetallJugador(nom, multes) {
           <tbody>
             ${multes.map(m => `
               <tr>
-                <td>${m.tipus}</td>
-                <td>${m.comentari || '-'}</td>
+                <td class="tipus-multa" data-comentari="${m.comentari || ''}">${m.tipus}</td>
                 <td style="text-align:right;">${parseFloat(m.import).toFixed(2)} €</td>
                 <td>${(m.data || '').split(' ')[0]}</td>
               </tr>`).join("")}
@@ -208,6 +206,18 @@ document.addEventListener("click", (e) => {
     const multesJugador = window.multes.filter(m => m.jugador === nom);
     if (multesJugador.length > 0) mostrarDetallJugador(nom, multesJugador);
   }
+});
+
+// 🔹 En clicar el tipus, mostra el comentari corresponent
+modal.querySelectorAll(".tipus-multa").forEach(td => {
+  td.addEventListener("click", () => {
+    const comentari = td.dataset.comentari.trim();
+    if (comentari) {
+      alert(`💬 Comentari: ${comentari}`);
+    } else {
+      alert("Aquest tipus de multa no té cap comentari.");
+    }
+  });
 });
 
 
