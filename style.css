@@ -23,11 +23,37 @@ h1 {
 }
 
 /* ----- SECCIONS ----- */
-h2, h3 {
+h2{
   margin-top: 40px;
   margin-bottom: 15px;
   color: #333;
 }
+.multes-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.multes-header h3 {
+  margin: 0;             /* elimina l’espai inferior per defecte */
+  padding-bottom: 0;     
+  line-height: 1;        /* redueix la separació visual */
+}
+
+.excel-link {
+  font-size: 12px;
+  color: #000;           /* negre */
+  text-decoration: underline;
+  margin-top: 2px;       /* ajust fi per acostar-ho al títol */
+  cursor: pointer;
+}
+
+.excel-link:hover {
+  color: #000;
+}
+
+
 
 /* ----- MULTES PER JUGADOR (CAPSES GRIS CLAR) ----- */
 #players {
@@ -461,12 +487,3 @@ td:last-child {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
 }
-
-.excel-link {
-  font-size: 9px;
-  color: #b5b5b5;          /* gris suau */
-  text-decoration: underline;
-  margin-top: 1px;
-  cursor: pointer;
-}
-
