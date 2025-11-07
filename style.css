@@ -462,11 +462,11 @@ td:last-child {
   to { opacity: 1; transform: scale(1); }
 }
 
-excel-link {
-  font-size: 10px;
-  color: #000;          /* gris suau */
+.excel-link {
+  font-size: 9px;
+  color: #b5b5b5;          /* gris suau */
   text-decoration: underline;
-  margin-top: 2px;
+  margin-top: 1px;
   cursor: pointer;
 }
 
