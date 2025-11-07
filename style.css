@@ -46,6 +46,7 @@ h2{
   color: #000;           /* negre */
   text-decoration: underline;
   margin-top: 2px;       /* ajust fi per acostar-ho al títol */
+  margin-bottom: 10px
   cursor: pointer;
 }
 
