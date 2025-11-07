@@ -198,18 +198,7 @@ function mostrarDetallJugador(nom, multes) {
   setTimeout(() => modal.classList.add("visible"), 10);
   modal.querySelector(".close-btn").onclick = () => modal.remove();
   modal.onclick = e => { if (e.target === modal) modal.remove(); };
-}
-
-// 🔹 Obrir modal en clicar un jugador
-document.addEventListener("click", (e) => {
-  const card = e.target.closest(".player-card, .player-row");
-  if (card && window.multes) {
-    const nom = card.querySelector(".player-name").textContent.trim();
-    const multesJugador = window.multes.filter(m => m.jugador === nom);
-    if (multesJugador.length > 0) mostrarDetallJugador(nom, multesJugador);
-  }
-});
-
+  
   // 🔹 Obrir finestra emergent amb comentari (només si existeix)
   modal.querySelectorAll(".tipus-multa.clicable").forEach(td => {
     td.addEventListener("click", () => {
@@ -233,6 +222,22 @@ document.addEventListener("click", (e) => {
 
 
 });
+  
+}
+
+// 🔹 Obrir modal en clicar un jugador
+document.addEventListener("click", (e) => {
+  const card = e.target.closest(".player-card, .player-row");
+  if (card && window.multes) {
+    const nom = card.querySelector(".player-name").textContent.trim();
+    const multesJugador = window.multes.filter(m => m.jugador === nom);
+    if (multesJugador.length > 0) mostrarDetallJugador(nom, multesJugador);
+  }
+});
+
+  
+
+
 
 
 
