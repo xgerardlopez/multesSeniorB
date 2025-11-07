@@ -184,8 +184,10 @@ function mostrarDetallJugador(nom, multes) {
           </tbody>
           <tfoot>
             <tr>
-              <td colspan="2"><strong>Total:</strong></td>
-              <td style="text-align:right; color:#dc3545; font-weight:700;">${total.toFixed(2)} €</td>
+              <td></td>
+              <td style="text-align:right;">
+                <strong style="color:#dc3545;">Total: ${total.toFixed(2)} €</strong>
+              </td>
               <td></td>
             </tr>
           </tfoot>
