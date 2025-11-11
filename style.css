@@ -35,13 +35,6 @@ h2{
   margin-bottom: 8px;
 }
 
-.multes-header-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
 .multes-header h3 {
   margin: 0;             /* elimina l’espai inferior per defecte */
   padding-bottom: 0;     
@@ -59,20 +52,6 @@ h2{
 
 .excel-link:hover {
   color: #000;
-}
-
-#toggleFiltres {
-  background-color: #f8f9fa;
-  border: 1px solid #ced4da;
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-#toggleFiltres:hover {
-  background-color: #e9ecef;
 }
 
 
