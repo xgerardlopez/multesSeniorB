@@ -235,21 +235,7 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// 🔹 Mostrar / amagar el panell de filtres
-document.getElementById("toggleFiltres").addEventListener("click", () => {
-  const panel = document.getElementById("filtersPanel");
-  const btn = document.getElementById("toggleFiltres");
-
-  if (panel.style.display === "none") {
-    panel.style.display = "flex";  // o "block" si ho prefereixes en columna
-    btn.textContent = "Amagar filtres";
-  } else {
-    panel.style.display = "none";
-    btn.textContent = "Mostrar filtres";
-  }
-
   
-
 
 
 
