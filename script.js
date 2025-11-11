@@ -130,7 +130,7 @@ const normes = [
   { norma: "Tècnica: 5€ la primera, 10€ la segona, etc...", excepcio: "Cap" },
   { norma: "Aigua en tir lliure: 5€", excepcio: "Cap" }, 
   { norma: "Fallar entrada sol (partit): 1€", excepcio: "Cap" },
-  { norma: "Fallar oráculo: 1€ per jugador fallat", excepcio: "Cap" },
+  { norma: "Oráculo: 0,5€ per jugador fallat", excepcio: "Cap" },
   { norma: "No assistir sopar oficial: 10€", excepcio: "Motiu justificat" },
   { norma: "No anar Carpa/Espai en sopar oficial: 10€", excepcio: "Motiu justificat" }
 ];
