@@ -5,6 +5,22 @@ const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQUfrZ7AIsVOA
 carregarMultes();
 setInterval(carregarMultes, 60000);
 
+// 🔹 Ordre manual de jugadors
+const ordreJugadors = [
+  "Uri",
+  "Noam",
+  "Geri",
+  "Carles",
+  "Calma",
+  "Estany",
+  "Higueras",
+  "Urban",
+  "Gomez",
+  "Barros",
+  "Orlando"
+];
+
+
 async function carregarMultes() {
   try {
     const res = await fetch(SHEET_URL);
@@ -60,16 +76,22 @@ async function carregarMultes() {
   }
 }
 
-// 🔹 Mostra el total per jugador
+// 🔹 Mostra el total per jugador (incloent els que no tenen multes)
 function carregarJugadors(multes) {
   const playersDiv = document.getElementById('players');
   playersDiv.innerHTML = '';
 
-  const jugadors = [...new Set(multes.map(m => m.jugador))];
+  // 🔹 Calcula total per jugador
+  const totals = {};
+  multes.forEach(m => {
+    const nom = m.jugador;
+    if (!totals[nom]) totals[nom] = 0;
+    totals[nom] += parseFloat(m.import) || 0;
+  });
 
-  jugadors.forEach(nom => {
-    const multesJugador = multes.filter(m => m.jugador === nom);
-    const total = multesJugador.reduce((acc, m) => acc + (m.import || 0), 0);
+  // 🔹 Recorre la llista manual d'ordre
+  ordreJugadors.forEach(nom => {
+    const total = totals[nom] || 0; // si no hi ha multes → 0€
 
     const div = document.createElement('div');
     div.className = 'player-card';
@@ -81,6 +103,7 @@ function carregarJugadors(multes) {
     playersDiv.appendChild(div);
   });
 }
+
 
 // 🔹 Mostra la taula principal
 function carregarTaula(data) {
