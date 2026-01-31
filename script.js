@@ -12,6 +12,7 @@ const ordreJugadors = [
   "Geri",
   "Carles",
   "Calma",
+  "David",
   "Estany",
   "Higueras",
   "Urban",
