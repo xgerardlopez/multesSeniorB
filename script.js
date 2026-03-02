@@ -18,7 +18,8 @@ const ordreJugadors = [
   "Urban",
   "Gomez",
   "Barros",
-  "Orlando"
+  "Orlando",
+  "Balada"
 ];
 
 
@@ -154,9 +155,12 @@ const normes = [
   { norma: "Tècnica: 5€ la primera, 10€ la segona, etc...", excepcio: "Cap" },
   { norma: "Aigua en tir lliure: 5€", excepcio: "Cap" }, 
   { norma: "Fallar entrada sol (partit): 1€", excepcio: "Cap" },
-  { norma: "Oráculo: 0,5€ per jugador fallat", excepcio: "Cap" },
+  { norma: "Fallar TL tècnica: 1€", excepcio: "Cap" },
   { norma: "No assistir sopar oficial: 10€", excepcio: "Motiu justificat" },
-  { norma: "No anar Carpa/Espai en sopar oficial: 10€", excepcio: "Motiu justificat" }
+  { norma: "No anar Carpa/Espai en sopar oficial: 10€", excepcio: "Motiu justificat" }, 
+  { norma: "Mòbil en partit o entreno: 1€", excepcio: "Cap" },
+  { norma: "Tirar en pauses als entrenos: 1€", excepcio: "Cap" },
+  { norma: "No portar peto divendres: 1€", excepcio: "Cap" }
 ];
 
 function carregarNormes() {
