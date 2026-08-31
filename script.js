@@ -56,9 +56,6 @@ async function carregarMultes() {
     }, 0);
 
     document.getElementById("totalGlobal").textContent = `TOTAL: ${totalGlobal.toFixed(2)} €`;
-
-
-
     // 🔹 Ordenem de més nova a més antiga (la data més recent primer)
     const multes = data
       .map(m => ({
@@ -99,10 +96,20 @@ function carregarJugadors(multes) {
   // 🔹 Recorre la llista manual d'ordre
   ordreJugadors.forEach(nom => {
     const total = totals[normalitzarNom(nom)] || 0; // si no hi ha multes → 0€
+    const inicials = nom
+      .split(/\s+/)
+      .map(part => part[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase();
 
     const div = document.createElement('div');
     div.className = 'player-card';
+    div.setAttribute('role', 'button');
+    div.setAttribute('tabindex', '0');
+    div.setAttribute('aria-label', `Veure les multes de ${nom}`);
     div.innerHTML = `
+      <span class="player-avatar" aria-hidden="true">${inicials}</span>
       <span class="player-name">${nom}</span>
       <div class="divider"></div>
       <span class="player-amount">${total.toFixed(2)} €</span>
@@ -119,13 +126,14 @@ function carregarTaula(data) {
 
   data.forEach(m => {
     const tr = document.createElement('tr');
+    const estatClass = normalitzarNom(m.estat).replace(/\s+/g, '-');
     tr.innerHTML = `
       <td>${m.jugador}</td>
       <td>${m.import.toFixed(2)} €</td>
       <td>${m.tipus}</td>
       <td>${m.comentari || '-'}</td>
       <td>${m.data}</td>
-      <td>${m.estat}</td>
+      <td><span class="status ${estatClass}">${m.estat}</span></td>
     `;
     tbody.appendChild(tr);
   });
@@ -171,10 +179,21 @@ const normes = [
 function carregarNormes() {
   const container = document.getElementById('normesList');
   container.innerHTML = '';
-  normes.forEach(n => {
+  normes.forEach((n, index) => {
     const div = document.createElement('div');
-    div.className = 'norma';
-    div.innerHTML = `<strong>${n.norma}</strong><br>${n.detall}`;
+    const esPremi = n.norma.startsWith('🚀');
+    const esExcepcio = n.norma.startsWith('📋');
+    const tipus = esPremi ? 'norma--premi' : esExcepcio ? 'norma--excepcio' : '';
+    const marcador = esPremi ? '★' : esExcepcio ? 'i' : String(index + 1).padStart(2, '0');
+
+    div.className = `norma ${tipus}`.trim();
+    div.innerHTML = `
+      <span class="norma-index" aria-hidden="true">${marcador}</span>
+      <div class="norma-content">
+        <strong>${n.norma}</strong>
+        <span class="norma-detail">${n.detall}</span>
+      </div>
+    `;
     container.appendChild(div);
   });
 }
@@ -268,7 +287,10 @@ document.addEventListener("click", (e) => {
   }
 });
 
-  
-
-
-
+document.addEventListener("keydown", (e) => {
+  const card = e.target.closest(".player-card, .player-row");
+  if (card && (e.key === "Enter" || e.key === " ")) {
+    e.preventDefault();
+    card.click();
+  }
+});

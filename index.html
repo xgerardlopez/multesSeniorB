@@ -3,72 +3,143 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Multes SeniorB</title>
+  <meta name="description" content="Control de multes del Senior B de l'AE Minguella.">
+  <meta name="theme-color" content="#081a3a">
+  <title>Control de Multes · Senior B</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="app">
-    <div style="text-align: center">
-      <img
-        src="https://res.cloudinary.com/srourera/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1756555944/minguella/agrupacio-esportiva-minguella-escut_eri68n.jpg"
-        alt="Logo Minguella"
-        style="width: 150px; height: 150px; object-fit: contain"
-      />
-    </div>
+    <header class="site-header">
+      <div class="header-glow" aria-hidden="true"></div>
 
-    <h1>Multes SeniorB</h1>
+      <div class="brand-bar">
+        <a class="brand" href="#top" aria-label="Inici">
+          <span class="brand-mark">
+            <img src="img/logo.png" alt="Escut de l'AE Minguella">
+          </span>
+          <span class="brand-copy">
+            <strong>AE Minguella</strong>
+            <span>Senior B · Temporada 2026–27</span>
+          </span>
+        </a>
 
-    <section id="players-section">
-      <h3>Jugadors</h3>
-      <div id="players"></div>
-      
-      <div class="total-global">
-        <div class="total-global-box" id="totalGlobal">TOTAL: 0.00 €</div>
-      </div>
-    </section>
-
-    <section id="multes-section">
-      <div class="multes-header">
-        <h3>Totes les Multes</h3>
-        <a class="excel-link" href="https://docs.google.com/spreadsheets/d/1un2vHvkFn8V9T9JQkDYhDu_WYGXY584ilDuACKzt-Ak/edit?gid=0#gid=0" target="_blank">Excel</a>
+        <span class="live-badge">
+          <span class="live-dot" aria-hidden="true"></span>
+          Dades en directe
+        </span>
       </div>
 
+      <div class="hero" id="top">
+        <div class="hero-copy">
+          <p class="eyebrow">Gestió interna de l'equip</p>
+          <h1>Control de multes</h1>
+          <p class="hero-description">Una visió clara i actualitzada de les multes, els imports i les normes del Senior B.</p>
+        </div>
 
-      <div class="filters">
-        <input type="text" id="filterJugador" placeholder="Filtra per jugador">
-        <select id="filterEstat">
-          <option value="">Tots els estats</option>
-          <option value="pendent">Pendent</option>
-          <option value="pagada">Pagada</option>
-          <option value="anulada">Anulada</option>
-        </select>
-        <button onclick="aplicarFiltres()">Filtra</button>
-        <button onclick="resetFiltres()">Restableix</button>
+        <div class="total-global" aria-label="Total acumulat de multes">
+          <span class="total-label">Total acumulat</span>
+          <div class="total-global-box" id="totalGlobal">TOTAL: 0.00 €</div>
+          <span class="total-caption">Actualització automàtica cada minut</span>
+        </div>
       </div>
+    </header>
 
-      
-        
-      <div class="table-container">
-        <table id="taulaMultes">
-          <thead>
-            <tr>
-              <th>Jugador</th>
-              <th>Import (€)</th>
-              <th>Tipus</th>
-              <th>Comentari</th>
-              <th>Data</th>
-              <th>Estat</th>
-            </tr>
-          </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-    </section>
+    <main class="content-shell">
+      <section class="content-section" id="players-section">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Plantilla</p>
+            <h2>Jugadors i staff</h2>
+            <p class="section-description">Consulta l'import acumulat i obre el detall de cada membre.</p>
+          </div>
+          <span class="section-count">12 membres</span>
+        </div>
 
-    <section id="normes-section">
-      <h3>Normes</h3>
-      <div id="normesList"></div>
-    </section>
+        <div id="players" aria-live="polite"></div>
+      </section>
+
+      <section class="content-section" id="multes-section">
+        <div class="section-heading multes-header">
+          <div>
+            <p class="section-kicker">Registre</p>
+            <h2>Totes les multes</h2>
+            <p class="section-description">Historial complet ordenat de més recent a més antic.</p>
+          </div>
+
+          <a class="excel-link" href="https://docs.google.com/spreadsheets/d/1un2vHvkFn8V9T9JQkDYhDu_WYGXY584ilDuACKzt-Ak/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7l-5-5Z"></path>
+              <path d="M14 2v5h5M8 13h8M8 17h8M11 9H8"></path>
+            </svg>
+            Obrir Google Sheets
+          </a>
+        </div>
+
+        <div class="filters" aria-label="Filtres de multes">
+          <label class="field-group" for="filterJugador">
+            <span>Jugador</span>
+            <span class="input-shell">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m20 20-3.5-3.5"></path>
+              </svg>
+              <input type="text" id="filterJugador" placeholder="Cerca un jugador">
+            </span>
+          </label>
+
+          <label class="field-group" for="filterEstat">
+            <span>Estat</span>
+            <select id="filterEstat">
+              <option value="">Tots els estats</option>
+              <option value="pendent">Pendent</option>
+              <option value="pagada">Pagada</option>
+              <option value="anulada">Anulada</option>
+            </select>
+          </label>
+
+          <div class="filter-actions">
+            <button class="button button-primary" type="button" onclick="aplicarFiltres()">Aplicar filtres</button>
+            <button class="button button-secondary" type="button" onclick="resetFiltres()">Restablir</button>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-container">
+            <table id="taulaMultes">
+              <thead>
+                <tr>
+                  <th>Jugador</th>
+                  <th>Import</th>
+                  <th>Tipus</th>
+                  <th>Comentari</th>
+                  <th>Data</th>
+                  <th>Estat</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="normes-section">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Codi de l'equip</p>
+            <h2>Normes i imports</h2>
+            <p class="section-description">Criteris compartits per mantenir el compromís dins i fora de la pista.</p>
+          </div>
+        </div>
+
+        <div id="normesList"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>AE Minguella · Senior B</span>
+      <span>Control intern de l'equip</span>
+    </footer>
   </div>
 
   <script src="script.js"></script>
