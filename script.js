@@ -30,7 +30,8 @@ const normalitzarNom = (nom = "") => nom
 
 async function carregarMultes() {
   try {
-    const res = await fetch(SHEET_URL);
+    const urlActualitzada = `${SHEET_URL}&_=${Date.now()}`;
+    const res = await fetch(urlActualitzada, { cache: "no-store" });
     const text = await res.text();
     const rows = text.split("\n").map(r => r.split(","));
     const headers = rows.shift().map(h => h.trim());
