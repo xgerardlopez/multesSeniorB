@@ -17,7 +17,8 @@ const ordreJugadors = [
   "Urban",
   "Gómez",
   "Barros",
-  "Bruno"
+  "Bruno", 
+  "Balada"
 ];
 
 const normalitzarNom = (nom = "") => nom
@@ -156,16 +157,14 @@ const normes = [
   { norma: "Tard partit", detall: "1 €/minut (màxim 20 €)" },
   { norma: "Saltar-se partit", detall: "20 €" },
   { norma: "Tècnica", detall: "5 € la 1a, 10 € la 2a, etc. (fins a 20 €)" },
-  { norma: "Deixar-se peto dijous", detall: "3 €" },
+  { norma: "Deixar-se peto divendres", detall: "3 €" },
   { norma: "Demanar TL tècnica i fallar", detall: "1 €" },
   { norma: "Fer aigua al partit", detall: "1 €" },
-  { norma: "Deixar-se blanca fora de casa", detall: "5 €" },
-  { norma: "Faltada machista/homòfoba", detall: "1 €" },
+  { norma: "Deixar-se blanca", detall: "5 €" },
   { norma: "Saltar-se sopar oficial", detall: "10 €" },
-  { norma: "Saltar-se presentació/enemic invisible", detall: "20 €" },
   { norma: "🚀 3 victòries seguides", detall: "El capità porta birres al vestuari" },
   { norma: "🚀 6 victòries seguides", detall: "L'staff paga una copa" },
-  { norma: "📋 Excepcions", detall: "Hueso no participa · Rou no rep multa d'entreno els dilluns · Els ajudants de l'staff no reben multes d'entreno" }
+  { norma: "📋 Excepcions", detall: "Faltar per feina/motius de salut/motius de causa major (decideix entrenador)" }
 ];
 
 function carregarNormes() {
