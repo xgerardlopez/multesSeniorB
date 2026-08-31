@@ -8,19 +8,23 @@ setInterval(carregarMultes, 60000);
 // 🔹 Ordre manual de jugadors
 const ordreJugadors = [
   "Uri",
-  "Noam",
   "Geri",
-  "Carles",
+  "Albesa",
   "Calma",
-  "David",
-  "Estany",
   "Higueras",
+  "Nocete",
+  "Estany",
   "Urban",
-  "Gomez",
+  "Gómez",
   "Barros",
-  "Orlando",
-  "Balada"
+  "Bruno"
 ];
+
+const normalitzarNom = (nom = "") => nom
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "")
+  .toLowerCase()
+  .trim();
 
 
 async function carregarMultes() {
@@ -86,14 +90,14 @@ function carregarJugadors(multes) {
   // 🔹 Calcula total per jugador
   const totals = {};
   multes.forEach(m => {
-    const nom = m.jugador;
+    const nom = normalitzarNom(m.jugador);
     if (!totals[nom]) totals[nom] = 0;
     totals[nom] += parseFloat(m.import) || 0;
   });
 
   // 🔹 Recorre la llista manual d'ordre
   ordreJugadors.forEach(nom => {
-    const total = totals[nom] || 0; // si no hi ha multes → 0€
+    const total = totals[normalitzarNom(nom)] || 0; // si no hi ha multes → 0€
 
     const div = document.createElement('div');
     div.className = 'player-card';
@@ -128,11 +132,11 @@ function carregarTaula(data) {
 
 // 🔹 Filtres
 function aplicarFiltres() {
-  const jugador = document.getElementById('filterJugador').value.toLowerCase();
+  const jugador = normalitzarNom(document.getElementById('filterJugador').value);
   const estat = document.getElementById('filterEstat').value.toLowerCase();
 
   const filtrat = window.multes.filter(m =>
-    (jugador === "" || m.jugador.toLowerCase().includes(jugador)) &&
+    (jugador === "" || normalitzarNom(m.jugador).includes(jugador)) &&
     (estat === "" || m.estat.toLowerCase() === estat)
   );
 
@@ -147,20 +151,21 @@ function resetFiltres() {
 
 // 🔹 Normes
 const normes = [
-  { norma: "Tard entreno/partit: 1€ + 1€ cada 5min", excepcio: "Motiu justificat" },
-  { norma: "No assistir partit: 20€", excepcio: "Motiu justificat" },
-  { norma: "No assistir entreno: 5€", excepcio: "Motiu justificat" },
-  { norma: "No assistir físic: 3€", excepcio: "Motiu justificat" },
-  { norma: "Deixar-se la blanca: Partit 10€ | Entreno 1€", excepcio: "Lesionat" },
-  { norma: "Tècnica: 5€ la primera, 10€ la segona, etc...", excepcio: "Cap" },
-  { norma: "Aigua en tir lliure: 5€", excepcio: "Cap" }, 
-  { norma: "Fallar entrada sol (partit): 1€", excepcio: "Cap" },
-  { norma: "Fallar TL tècnica: 1€", excepcio: "Cap" },
-  { norma: "No assistir sopar oficial: 10€", excepcio: "Motiu justificat" },
-  { norma: "No anar Carpa/Espai en sopar oficial: 10€", excepcio: "Motiu justificat" }, 
-  { norma: "Mòbil en partit o entreno: 1€", excepcio: "Cap" },
-  { norma: "Tirar en pauses als entrenos: 1€", excepcio: "Cap" },
-  { norma: "No portar peto divendres: 1€", excepcio: "Cap" }
+  { norma: "Tard a entreno", detall: "1 € + 1 €/5 min (màxim 5 €)" },
+  { norma: "Saltar-se entreno", detall: "5 €" },
+  { norma: "Tard partit", detall: "1 €/minut (màxim 20 €)" },
+  { norma: "Saltar-se partit", detall: "20 €" },
+  { norma: "Tècnica", detall: "5 € la 1a, 10 € la 2a, etc. (fins a 20 €)" },
+  { norma: "Deixar-se peto dijous", detall: "3 €" },
+  { norma: "Demanar TL tècnica i fallar", detall: "1 €" },
+  { norma: "Fer aigua al partit", detall: "1 €" },
+  { norma: "Deixar-se blanca fora de casa", detall: "5 €" },
+  { norma: "Faltada machista/homòfoba", detall: "1 €" },
+  { norma: "Saltar-se sopar oficial", detall: "10 €" },
+  { norma: "Saltar-se presentació/enemic invisible", detall: "20 €" },
+  { norma: "🚀 3 victòries seguides", detall: "El capità porta birres al vestuari" },
+  { norma: "🚀 6 victòries seguides", detall: "L'staff paga una copa" },
+  { norma: "📋 Excepcions", detall: "Hueso no participa · Rou no rep multa d'entreno els dilluns · Els ajudants de l'staff no reben multes d'entreno" }
 ];
 
 function carregarNormes() {
@@ -169,7 +174,7 @@ function carregarNormes() {
   normes.forEach(n => {
     const div = document.createElement('div');
     div.className = 'norma';
-    div.innerHTML = `<strong>${n.norma}</strong><br>Excepció: ${n.excepcio}`;
+    div.innerHTML = `<strong>${n.norma}</strong><br>${n.detall}`;
     container.appendChild(div);
   });
 }
@@ -258,13 +263,12 @@ document.addEventListener("click", (e) => {
   const card = e.target.closest(".player-card, .player-row");
   if (card && window.multes) {
     const nom = card.querySelector(".player-name").textContent.trim();
-    const multesJugador = window.multes.filter(m => m.jugador === nom);
+    const multesJugador = window.multes.filter(m => normalitzarNom(m.jugador) === normalitzarNom(nom));
     if (multesJugador.length > 0) mostrarDetallJugador(nom, multesJugador);
   }
 });
 
   
-
 
 
 
