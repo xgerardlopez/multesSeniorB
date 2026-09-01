@@ -1,9 +1,9 @@
-// 🔗 Enllaç al Google Sheets publicat com CSV
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQUfrZ7AIsVOACiOZSEPBE7b_jfuL5TUFufgHVVze5-eeOqXRYwxbt6FGJ9TltBI2AMxVQTQ2ZE1crw/pub?gid=0&single=true&output=csv";
+// 🔗 Consulta directa al Google Sheets en format CSV
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/1un2vHvkFn8V9T9JQkDYhDu_WYGXY584ilDuACKzt-Ak/gviz/tq?tqx=out:csv&sheet=Multes";
 
-// 🕐 Actualitza automàticament cada 60 segons
+// 🕐 Actualitza automàticament cada 15 segons
 carregarMultes();
-setInterval(carregarMultes, 60000);
+setInterval(carregarMultes, 15000);
 
 // 🔹 Ordre manual de jugadors
 const ordreJugadors = [
@@ -42,13 +42,51 @@ const dorsalsJugadors = {
   balada: "C"
 };
 
+function parsejarCSV(text) {
+  const files = [];
+  let fila = [];
+  let camp = "";
+  let entreCometes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const caracter = text[i];
+
+    if (caracter === '"') {
+      if (entreCometes && text[i + 1] === '"') {
+        camp += '"';
+        i++;
+      } else {
+        entreCometes = !entreCometes;
+      }
+    } else if (caracter === "," && !entreCometes) {
+      fila.push(camp);
+      camp = "";
+    } else if ((caracter === "\n" || caracter === "\r") && !entreCometes) {
+      if (caracter === "\r" && text[i + 1] === "\n") i++;
+      fila.push(camp);
+      files.push(fila);
+      fila = [];
+      camp = "";
+    } else {
+      camp += caracter;
+    }
+  }
+
+  if (camp !== "" || fila.length > 0) {
+    fila.push(camp);
+    files.push(fila);
+  }
+
+  return files;
+}
+
 
 async function carregarMultes() {
   try {
     const urlActualitzada = `${SHEET_URL}&_=${Date.now()}`;
     const res = await fetch(urlActualitzada, { cache: "no-store" });
     const text = await res.text();
-    const rows = text.split("\n").map(r => r.split(","));
+    const rows = parsejarCSV(text);
     const headers = rows.shift().map(h => h.trim());
 
     const data = rows
@@ -303,3 +341,9 @@ document.addEventListener("keydown", (e) => {
     card.click();
   }
 });
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) carregarMultes();
+});
+
+window.addEventListener("pageshow", carregarMultes);

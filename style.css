@@ -1075,17 +1075,34 @@ select:focus {
 
   .modal-body {
     padding: 6px 12px 16px;
-    overflow-x: auto;
+    overflow-x: hidden;
   }
 
   .fines-table {
-    min-width: 480px;
-    font-size: 12px;
+    min-width: 0;
+    table-layout: fixed;
+    font-size: 11.5px;
   }
 
   .fines-table th,
   .fines-table td {
-    padding: 12px 9px;
+    padding: 11px 5px;
+  }
+
+  .fines-table th:first-child,
+  .fines-table td:first-child {
+    width: 48%;
+    overflow-wrap: anywhere;
+  }
+
+  .fines-table th:nth-child(2),
+  .fines-table td:nth-child(2) {
+    width: 20%;
+  }
+
+  .fines-table th:nth-child(3),
+  .fines-table td:nth-child(3) {
+    width: 32%;
   }
 }
 
