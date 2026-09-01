@@ -27,6 +27,21 @@ const normalitzarNom = (nom = "") => nom
   .toLowerCase()
   .trim();
 
+const dorsalsJugadors = {
+  uri: "1",
+  geri: "10",
+  albesa: "12",
+  calma: "13",
+  higueras: "14",
+  nocete: "15",
+  estany: "17",
+  urban: "19",
+  gomez: "21",
+  barros: "22",
+  bruno: "24",
+  balada: "C"
+};
+
 
 async function carregarMultes() {
   try {
@@ -97,12 +112,7 @@ function carregarJugadors(multes) {
   // 🔹 Recorre la llista manual d'ordre
   ordreJugadors.forEach(nom => {
     const total = totals[normalitzarNom(nom)] || 0; // si no hi ha multes → 0€
-    const inicials = nom
-      .split(/\s+/)
-      .map(part => part[0])
-      .join('')
-      .slice(0, 2)
-      .toUpperCase();
+    const dorsal = dorsalsJugadors[normalitzarNom(nom)];
 
     const div = document.createElement('div');
     div.className = 'player-card';
@@ -110,7 +120,7 @@ function carregarJugadors(multes) {
     div.setAttribute('tabindex', '0');
     div.setAttribute('aria-label', `Veure les multes de ${nom}`);
     div.innerHTML = `
-      <span class="player-avatar" aria-hidden="true">${inicials}</span>
+      <span class="player-avatar" aria-hidden="true">${dorsal}</span>
       <span class="player-name">${nom}</span>
       <div class="divider"></div>
       <span class="player-amount">${total.toFixed(2)} €</span>
