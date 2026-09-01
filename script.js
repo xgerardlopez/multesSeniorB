@@ -190,16 +190,14 @@ const normes = [
 function carregarNormes() {
   const container = document.getElementById('normesList');
   container.innerHTML = '';
-  normes.forEach((n, index) => {
+  normes.forEach(n => {
     const div = document.createElement('div');
     const esPremi = n.norma.startsWith('🚀');
     const esExcepcio = n.norma.startsWith('📋');
     const tipus = esPremi ? 'norma--premi' : esExcepcio ? 'norma--excepcio' : '';
-    const marcador = esPremi ? '★' : esExcepcio ? 'i' : String(index + 1).padStart(2, '0');
 
     div.className = `norma ${tipus}`.trim();
     div.innerHTML = `
-      <span class="norma-index" aria-hidden="true">${marcador}</span>
       <div class="norma-content">
         <strong>${n.norma}</strong>
         <span class="norma-detail">${n.detall}</span>

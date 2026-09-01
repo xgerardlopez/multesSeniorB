@@ -291,7 +291,7 @@ h1 {
   padding: 34px;
   border: 1px solid rgba(221, 227, 236, 0.88);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.97);
+  background: #fff;
   box-shadow: var(--shadow-md);
 }
 
@@ -680,17 +680,15 @@ select:focus {
 #normesList {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
   gap: 12px;
 }
 
 .norma {
   position: relative;
-  display: grid;
-  grid-template-columns: 40px minmax(0, 1fr);
-  gap: 14px;
-  align-items: start;
-  min-height: 104px;
-  padding: 17px;
+  align-self: start;
+  min-height: 0;
+  padding: 15px 17px;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
@@ -704,18 +702,6 @@ select:focus {
   inset: 0 auto 0 0;
   width: 3px;
   background: var(--yellow-500);
-}
-
-.norma-index {
-  display: grid;
-  width: 40px;
-  height: 40px;
-  place-items: center;
-  border-radius: 11px;
-  background: var(--blue-50);
-  color: var(--navy-700);
-  font-size: 12px;
-  font-weight: 800;
 }
 
 .norma-content {
@@ -747,21 +733,11 @@ select:focus {
   background: var(--navy-700);
 }
 
-.norma--premi .norma-index {
-  background: var(--navy-800);
-  color: #fff;
-}
-
 .norma--excepcio {
   grid-column: 1 / -1;
   min-height: 0;
   border-color: #eadf9e;
   background: linear-gradient(135deg, var(--yellow-100), #fffdf2);
-}
-
-.norma--excepcio .norma-index {
-  background: #fff;
-  color: var(--warning);
 }
 
 /* Modals */
