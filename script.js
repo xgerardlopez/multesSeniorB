@@ -188,25 +188,6 @@ function carregarTaula(data) {
   });
 }
 
-// 🔹 Filtres
-function aplicarFiltres() {
-  const jugador = normalitzarNom(document.getElementById('filterJugador').value);
-  const estat = document.getElementById('filterEstat').value.toLowerCase();
-
-  const filtrat = window.multes.filter(m =>
-    (jugador === "" || normalitzarNom(m.jugador).includes(jugador)) &&
-    (estat === "" || m.estat.toLowerCase() === estat)
-  );
-
-  carregarTaula(filtrat);
-}
-
-function resetFiltres() {
-  document.getElementById('filterJugador').value = '';
-  document.getElementById('filterEstat').value = '';
-  carregarTaula(window.multes);
-}
-
 // 🔹 Normes
 const normes = [
   { norma: "Tard a entreno", detall: "1 € + 1 €/5 min (màxim 5 €)" },

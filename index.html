@@ -6,7 +6,7 @@
   <meta name="description" content="Control de multes del Senior B de l'AE Minguella.">
   <meta name="theme-color" content="#081a3a">
   <title>Control de Multes · Senior B</title>
-  <link rel="stylesheet" href="style.css?v=20260901-2">
+  <link rel="stylesheet" href="style.css?v=20260917-1">
 </head>
 <body>
   <div id="app">
@@ -72,34 +72,6 @@
           </a>
         </div>
 
-        <div class="filters" aria-label="Filtres de multes">
-          <label class="field-group" for="filterJugador">
-            <span>Jugador</span>
-            <span class="input-shell">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="11" cy="11" r="7"></circle>
-                <path d="m20 20-3.5-3.5"></path>
-              </svg>
-              <input type="text" id="filterJugador" placeholder="Cerca un jugador">
-            </span>
-          </label>
-
-          <label class="field-group" for="filterEstat">
-            <span>Estat</span>
-            <select id="filterEstat">
-              <option value="">Tots els estats</option>
-              <option value="pendent">Pendent</option>
-              <option value="pagada">Pagada</option>
-              <option value="anulada">Anulada</option>
-            </select>
-          </label>
-
-          <div class="filter-actions">
-            <button class="button button-primary" type="button" onclick="aplicarFiltres()">Aplicar filtres</button>
-            <button class="button button-secondary" type="button" onclick="resetFiltres()">Restablir</button>
-          </div>
-        </div>
-
         <div class="table-card">
           <div class="table-container">
             <table id="taulaMultes">
@@ -137,6 +109,6 @@
     </footer>
   </div>
 
-  <script src="script.js?v=20260901-2"></script>
+  <script src="script.js?v=20260917-1"></script>
 </body>
 </html>
