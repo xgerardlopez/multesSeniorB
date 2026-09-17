@@ -128,7 +128,15 @@ async function carregarMultes() {
 
     window.multes = multes;
     carregarJugadors(multes);
-    carregarTaula(multes);
+    carregarTaula(multes.slice(0, 10));
+    document.getElementById("multesSummary").textContent = multes.length > 10
+      ? `Mostrant les 10 més recents de ${multes.length} multes.`
+      : `${multes.length} ${multes.length === 1 ? "multa" : "multes"}, de més recent a més antiga.`;
+
+    const veureMes = document.getElementById("veureMesMultes");
+    veureMes.hidden = multes.length <= 10;
+    veureMes.setAttribute("aria-label", `Veure totes les ${multes.length} multes`);
+    if (document.getElementById("historialMultes").open) mostrarHistorialComplet(multes);
   } catch (error) {
     console.error("Error carregant dades:", error);
   }
@@ -187,6 +195,72 @@ function carregarTaula(data) {
     tbody.appendChild(tr);
   });
 }
+
+// 🔹 Historial complet en una finestra amb desplaçament propi
+function mostrarHistorialComplet(multes) {
+  const llista = document.getElementById("historialList");
+  const zonaDesplacable = document.querySelector(".history-scroll");
+  const posicio = zonaDesplacable.scrollTop;
+  const fragments = document.createDocumentFragment();
+
+  multes.forEach(m => {
+    const targeta = document.createElement("article");
+    targeta.className = "history-item";
+
+    const capcalera = document.createElement("div");
+    capcalera.className = "history-item-top";
+    const jugador = document.createElement("strong");
+    jugador.textContent = m.jugador;
+    const importMulta = document.createElement("span");
+    importMulta.className = "history-amount";
+    importMulta.textContent = `${m.import.toFixed(2)} €`;
+    capcalera.append(jugador, importMulta);
+
+    const tipus = document.createElement("p");
+    tipus.className = "history-type";
+    tipus.textContent = m.tipus;
+
+    const detalls = document.createElement("div");
+    detalls.className = "history-item-bottom";
+    const data = document.createElement("span");
+    data.className = "history-date";
+    data.textContent = m.data || "Sense data";
+    const estat = document.createElement("span");
+    estat.className = `status ${normalitzarNom(m.estat).replace(/\s+/g, "-")}`;
+    estat.textContent = m.estat;
+    detalls.append(data, estat);
+
+    targeta.append(capcalera, tipus, detalls);
+    if (m.comentari) {
+      const comentari = document.createElement("p");
+      comentari.className = "history-comment";
+      comentari.textContent = m.comentari;
+      targeta.appendChild(comentari);
+    }
+    fragments.appendChild(targeta);
+  });
+
+  llista.replaceChildren(fragments);
+  document.getElementById("historialCount").textContent = `${multes.length} ${multes.length === 1 ? "multa" : "multes"} · de més recent a més antiga`;
+  zonaDesplacable.scrollTop = posicio;
+}
+
+const historialDialog = document.getElementById("historialMultes");
+let desbordamentAnterior = "";
+
+document.getElementById("veureMesMultes").addEventListener("click", () => {
+  if (!window.multes || window.multes.length <= 10) return;
+  mostrarHistorialComplet(window.multes);
+  historialDialog.showModal();
+  desbordamentAnterior = document.body.style.overflow;
+  document.body.style.overflow = "hidden";
+});
+
+document.getElementById("tancarHistorial").addEventListener("click", () => historialDialog.close());
+historialDialog.addEventListener("close", () => {
+  document.body.style.overflow = desbordamentAnterior;
+  document.getElementById("veureMesMultes").focus();
+});
 
 // 🔹 Normes
 const normes = [

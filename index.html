@@ -6,7 +6,7 @@
   <meta name="description" content="Control de multes del Senior B de l'AE Minguella.">
   <meta name="theme-color" content="#081a3a">
   <title>Control de Multes · Senior B</title>
-  <link rel="stylesheet" href="style.css?v=20260917-1">
+  <link rel="stylesheet" href="style.css?v=20260917-2">
 </head>
 <body>
   <div id="app">
@@ -59,8 +59,8 @@
         <div class="section-heading multes-header">
           <div>
             <p class="section-kicker">Registre</p>
-            <h2>Totes les multes</h2>
-            <p class="section-description">Historial complet ordenat de més recent a més antic.</p>
+            <h2>Últimes multes</h2>
+            <p class="section-description" id="multesSummary">Carregant les multes...</p>
           </div>
 
           <a class="excel-link" href="https://docs.google.com/spreadsheets/d/1un2vHvkFn8V9T9JQkDYhDu_WYGXY584ilDuACKzt-Ak/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
@@ -89,6 +89,13 @@
             </table>
           </div>
         </div>
+
+        <button class="history-open-button" id="veureMesMultes" type="button" hidden>
+          Veure més
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m7 10 5 5 5-5"></path>
+          </svg>
+        </button>
       </section>
 
       <section class="content-section" id="normes-section">
@@ -103,12 +110,25 @@
       </section>
     </main>
 
+    <dialog class="history-dialog" id="historialMultes" aria-labelledby="historialTitle">
+      <div class="modal-header">
+        <div class="history-header-copy">
+          <h3 id="historialTitle">Totes les multes</h3>
+          <p id="historialCount"></p>
+        </div>
+        <button class="close-btn" id="tancarHistorial" type="button" aria-label="Tancar l'historial">&times;</button>
+      </div>
+      <div class="history-scroll">
+        <div class="history-list" id="historialList"></div>
+      </div>
+    </dialog>
+
     <footer class="site-footer">
       <span>AE Minguella · Senior B</span>
       <span>Control intern de l'equip</span>
     </footer>
   </div>
 
-  <script src="script.js?v=20260917-1"></script>
+  <script src="script.js?v=20260917-2"></script>
 </body>
 </html>
