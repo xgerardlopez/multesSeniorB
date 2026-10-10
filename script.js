@@ -17,8 +17,9 @@ const ordreJugadors = [
   "Urban",
   "Gómez",
   "Barros",
-  "Bruno", 
-  "Balada"
+  "Bruno",
+  "Balada",
+  "Calvo"
 ];
 
 const normalitzarNom = (nom = "") => nom
@@ -39,7 +40,8 @@ const dorsalsJugadors = {
   gomez: "21",
   barros: "22",
   bruno: "24",
-  balada: "C"
+  balada: "C",
+  calvo: "C"
 };
 
 function parsejarCSV(text) {
