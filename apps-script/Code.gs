@@ -133,8 +133,10 @@ function getPlayers_() {
   if (!sheet) throw new Error("No s'ha trobat la pestanya Jugadors.");
 
   const lastRow = Math.max(sheet.getLastRow(), 3);
-  return sheet.getRange(3, 1, lastRow - 2, 2)
+  const players = sheet.getRange(3, 1, lastRow - 2, 2)
     .getDisplayValues()
     .filter(row => row[0].trim() && row[1].trim() && row[1].trim().toLowerCase() !== "total")
     .map(row => row[1].trim());
+
+  return [...new Set(players)];
 }
