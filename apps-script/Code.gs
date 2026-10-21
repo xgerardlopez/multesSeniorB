@@ -22,6 +22,7 @@ const FINE_SETTINGS = {
 function doGet() {
   return HtmlService.createHtmlOutputFromFile("Index")
     .setTitle("Afegir multa · Senior B")
+    .setFaviconUrl("https://xgerardlopez.github.io/multesSeniorB/img/logo.png")
     .addMetaTag("viewport", "width=device-width, initial-scale=1, viewport-fit=cover")
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.DEFAULT);
 }
