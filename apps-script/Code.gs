@@ -49,7 +49,7 @@ function saveFine(payload) {
     if (!players.includes(player)) throw new Error("Selecciona un jugador vàlid.");
     if (!fine) throw new Error("Selecciona una multa vàlida.");
 
-    const amount = fine.mode === "fixed" ? fine.amount : Number(payload.amount);
+    const amount = Number(payload.amount);
     if (!Number.isFinite(amount) || amount <= 0) throw new Error("Indica un import vàlid.");
     if (fine.min && amount < fine.min) throw new Error(`L'import mínim és ${fine.min} €.`);
     if (fine.max && amount > fine.max) throw new Error(`L'import màxim és ${fine.max} €.`);

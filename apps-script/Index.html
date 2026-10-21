@@ -438,22 +438,17 @@
       fineHint.textContent = fine ? (fine.hint || "") : "";
       commentOptional.textContent = fine && fine.label === "Multa Extra" ? "*" : "(opcional)";
       commentInput.required = Boolean(fine && fine.label === "Multa Extra");
-      amountInput.required = Boolean(fine && fine.mode === "manual");
+      amountInput.required = Boolean(fine);
 
       if (!fine) {
         amountInput.required = false;
         return;
       }
-      if (fine.mode === "fixed") {
-        amountInput.value = fine.amount;
-        amountInput.disabled = true;
-      } else {
-        amountInput.value = "";
-        amountInput.disabled = false;
-        amountInput.min = fine.min || 0.5;
-        amountInput.max = fine.max || 100;
-        amountInput.step = fine.step || 0.5;
-      }
+      amountInput.disabled = false;
+      amountInput.min = fine.min || 0.5;
+      amountInput.max = fine.max || 100;
+      amountInput.step = fine.step || 0.5;
+      amountInput.value = fine.mode === "fixed" ? fine.amount : "";
     }
 
     function showMessage(type, text) {
