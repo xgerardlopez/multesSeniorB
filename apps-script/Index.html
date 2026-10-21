@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#081a3a">
+  <title>Afegir multa · Senior B</title>
+  <style>
+    :root {
+      --navy: #081a3a;
+      --navy-light: #163a72;
+      --yellow: #f5c400;
+      --canvas: #f3f6fb;
+      --surface: #ffffff;
+      --ink: #101828;
+      --muted: #667085;
+      --line: #dfe5ee;
+      --success: #157f52;
+      --danger: #b42318;
+      --shadow: 0 18px 45px rgba(9, 30, 66, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      min-height: 100vh;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select, textarea { font: inherit; }
+
+    .app-shell {
+      width: min(520px, 100%);
+      min-height: 100vh;
+      margin: 0 auto;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .app-header {
+      position: relative;
+      overflow: hidden;
+      padding: max(22px, env(safe-area-inset-top)) 22px 54px;
+      background: linear-gradient(145deg, var(--navy-light), var(--navy) 72%);
+      color: #fff;
+    }
+
+    .app-header::after {
+      content: "";
+      position: absolute;
+      right: -70px;
+      bottom: -105px;
+      width: 230px;
+      height: 230px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 50%;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand-name {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .connection {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 10px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.82);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .connection-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #63d9a2;
+      box-shadow: 0 0 0 4px rgba(99,217,162,.13);
+    }
+
+    h1 {
+      margin: 42px 0 8px;
+      font-size: clamp(32px, 9vw, 46px);
+      line-height: 1;
+      letter-spacing: -.045em;
+    }
+
+    .header-copy {
+      max-width: 330px;
+      margin: 0;
+      color: rgba(255,255,255,.68);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .form-card {
+      position: relative;
+      z-index: 1;
+      margin: -28px 14px 0;
+      padding: 22px;
+      border: 1px solid rgba(223,229,238,.9);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 12px 32px rgba(9,30,66,.1);
+    }
+
+    .form-intro {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+
+    .form-intro strong { font-size: 17px; }
+    .form-intro span { color: var(--muted); font-size: 12px; font-weight: 650; }
+
+    .field { margin-bottom: 18px; }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #344054;
+      font-size: 13px;
+      font-weight: 760;
+    }
+
+    .required { color: var(--danger); }
+
+    select, input, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      outline: none;
+      background: #fff;
+      color: var(--ink);
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    select, input { min-height: 52px; padding: 0 14px; }
+    textarea { min-height: 88px; padding: 13px 14px; resize: vertical; }
+
+    select:focus, input:focus, textarea:focus {
+      border-color: var(--navy-light);
+      box-shadow: 0 0 0 4px rgba(22,58,114,.1);
+    }
+
+    select:disabled, input:disabled {
+      background: #f7f8fa;
+      color: #475467;
+      opacity: 1;
+    }
+
+    .amount-row {
+      display: grid;
+      grid-template-columns: 1fr 58px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .currency {
+      display: grid;
+      min-height: 52px;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: #f8fafc;
+      font-weight: 800;
+    }
+
+    .field-hint {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .date-shortcuts {
+      display: flex;
+      gap: 8px;
+      margin-top: 9px;
+    }
+
+    .date-shortcuts button {
+      padding: 7px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: #344054;
+      font-size: 12px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    .submit-button {
+      display: flex;
+      width: 100%;
+      min-height: 56px;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin-top: 24px;
+      border: 0;
+      border-radius: 15px;
+      background: var(--navy);
+      color: #fff;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(8,26,58,.2);
+      transition: transform .16s ease, opacity .16s ease;
+    }
+
+    .submit-button:active { transform: scale(.985); }
+    .submit-button:disabled { cursor: wait; opacity: .62; }
+
+    .submit-icon {
+      display: grid;
+      width: 24px;
+      height: 24px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--yellow);
+      color: var(--navy);
+      font-size: 19px;
+      line-height: 1;
+    }
+
+    .message {
+      display: none;
+      margin: 16px 14px 0;
+      padding: 16px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .message.visible { display: block; }
+    .message.success { background: #eaf8f1; color: #10633f; }
+    .message.error { background: #fff0ee; color: var(--danger); }
+
+    .preview-note {
+      margin: 18px 22px max(24px, env(safe-area-inset-bottom));
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    [hidden] { display: none !important; }
+
+    @media (max-width: 420px) {
+      .form-card { padding: 20px 17px; }
+      .app-header { padding-inline: 18px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <div class="brand">
+        <p class="brand-name">AE Minguella · Senior B</p>
+        <span class="connection"><span class="connection-dot"></span><span id="connectionText">Connectant…</span></span>
+      </div>
+      <h1>Afegir multa</h1>
+      <p class="header-copy">Registra una multa en pocs segons. Quedarà desada directament al full de l’equip.</p>
+    </header>
+
+    <form class="form-card" id="fineForm">
+      <div class="form-intro">
+        <strong>Nova multa</strong>
+        <span>Estat: pendent</span>
+      </div>
+
+      <div class="field">
+        <label for="player">Jugador <span class="required">*</span></label>
+        <select id="player" name="player" required disabled>
+          <option value="">Carregant jugadors…</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="fineType">Multa <span class="required">*</span></label>
+        <select id="fineType" name="fineType" required disabled>
+          <option value="">Carregant multes…</option>
+        </select>
+        <span class="field-hint" id="fineHint" hidden></span>
+      </div>
+
+      <div class="field" id="amountField" hidden>
+        <label for="amount">Import <span class="required">*</span></label>
+        <div class="amount-row">
+          <input id="amount" name="amount" type="number" inputmode="decimal" min="0.5" step="0.5" placeholder="0,00">
+          <span class="currency">€</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="date">Data <span class="required">*</span></label>
+        <input id="date" name="date" type="date" required>
+        <div class="date-shortcuts">
+          <button type="button" data-date-offset="0">Avui</button>
+          <button type="button" data-date-offset="-1">Ahir</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="comment">Comentari <span id="commentOptional">(opcional)</span></label>
+        <textarea id="comment" name="comment" maxlength="250" placeholder="Afegeix un aclariment si cal"></textarea>
+      </div>
+
+      <button class="submit-button" id="submitButton" type="submit" disabled>
+        <span class="submit-icon">+</span>
+        <span id="submitText">Guardar multa</span>
+      </button>
+    </form>
+
+    <div class="message" id="message" role="status" aria-live="polite"></div>
+    <p class="preview-note" id="previewNote" hidden>Aquesta és una previsualització local. El botó simula el registre però encara no modifica el Google Sheets.</p>
+  </main>
+
+  <script>
+    const MOCK_DATA = {
+      players: ["Uri", "Geri", "Albesa", "Calma", "Higueras", "Nocete", "Estany", "Urban", "Gómez", "Barros", "Bruno", "Balada", "Calvo"],
+      fines: [
+        { id: "Arribar tard", label: "Arribar tard", mode: "manual", min: 1, max: 20, hint: "Indica l'import segons el retard" },
+        { id: "No assistir partit", label: "No assistir partit", mode: "fixed", amount: 20 },
+        { id: "Saltar-se entreno", label: "Saltar-se entreno", mode: "fixed", amount: 5 },
+        { id: "Deixar-se la blanca", label: "Deixar-se la blanca", mode: "fixed", amount: 10 },
+        { id: "Tècnica", label: "Tècnica", mode: "manual", min: 5, max: 20, step: 5, hint: "5 €, 10 €, 15 € o 20 €" },
+        { id: "Aigua", label: "Aigua", mode: "fixed", amount: 1 },
+        { id: "Fallar entrada sol", label: "Fallar entrada sol", mode: "fixed", amount: 1 },
+        { id: "No assistir sopar", label: "No assistir sopar", mode: "fixed", amount: 10 },
+        { id: "No anar Carpa/Espai", label: "No anar Carpa/Espai", mode: "manual", min: 0.5, max: 100, hint: "Indica l'import" },
+        { id: "Multa Extra", label: "Multa Extra", mode: "manual", min: 0.5, max: 100, hint: "Indica l'import i el motiu" },
+        { id: "Fallar TL tècnica", label: "Fallar TL tècnica", mode: "fixed", amount: 1 },
+        { id: "Mòbil", label: "Mòbil", mode: "manual", min: 0.5, max: 100, hint: "Indica l'import" },
+        { id: "Peto divendres", label: "Peto divendres", mode: "fixed", amount: 3 },
+        { id: "Tir mig entreno", label: "Tir mig entreno", mode: "fixed", amount: 1 }
+      ]
+    };
+
+    const state = { fines: [], isLive: typeof google !== "undefined" && google.script && google.script.run };
+    const form = document.getElementById("fineForm");
+    const playerSelect = document.getElementById("player");
+    const fineSelect = document.getElementById("fineType");
+    const fineHint = document.getElementById("fineHint");
+    const amountField = document.getElementById("amountField");
+    const amountInput = document.getElementById("amount");
+    const dateInput = document.getElementById("date");
+    const commentInput = document.getElementById("comment");
+    const commentOptional = document.getElementById("commentOptional");
+    const submitButton = document.getElementById("submitButton");
+    const submitText = document.getElementById("submitText");
+    const message = document.getElementById("message");
+
+    function localISODate(offset = 0) {
+      const date = new Date();
+      date.setDate(date.getDate() + offset);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function callServer(method, data) {
+      return new Promise((resolve, reject) => {
+        google.script.run
+          .withSuccessHandler(resolve)
+          .withFailureHandler(error => reject(new Error(error.message || String(error))))
+          [method](data);
+      });
+    }
+
+    function fillSelect(select, placeholder, items, getValue, getLabel) {
+      select.innerHTML = `<option value="">${placeholder}</option>`;
+      items.forEach(item => {
+        const option = document.createElement("option");
+        option.value = getValue(item);
+        option.textContent = getLabel(item);
+        select.appendChild(option);
+      });
+      select.disabled = false;
+    }
+
+    function initialize(data) {
+      state.fines = data.fines;
+      fillSelect(playerSelect, "Selecciona un jugador", data.players, item => item, item => item);
+      fillSelect(fineSelect, "Selecciona una multa", data.fines, item => item.id, item => item.label);
+      dateInput.value = data.today || localISODate();
+      submitButton.disabled = false;
+      document.getElementById("connectionText").textContent = state.isLive ? "Connectat" : "Previsualització";
+      document.getElementById("previewNote").hidden = state.isLive;
+    }
+
+    function updateFineFields() {
+      const fine = state.fines.find(item => item.id === fineSelect.value);
+      amountField.hidden = !fine;
+      fineHint.hidden = !fine || !fine.hint;
+      fineHint.textContent = fine ? (fine.hint || "") : "";
+      commentOptional.textContent = fine && fine.label === "Multa Extra" ? "*" : "(opcional)";
+      commentInput.required = Boolean(fine && fine.label === "Multa Extra");
+      amountInput.required = Boolean(fine && fine.mode === "manual");
+
+      if (!fine) {
+        amountInput.required = false;
+        return;
+      }
+      if (fine.mode === "fixed") {
+        amountInput.value = fine.amount;
+        amountInput.disabled = true;
+      } else {
+        amountInput.value = "";
+        amountInput.disabled = false;
+        amountInput.min = fine.min || 0.5;
+        amountInput.max = fine.max || 100;
+        amountInput.step = fine.step || 0.5;
+      }
+    }
+
+    function showMessage(type, text) {
+      message.className = `message visible ${type}`;
+      message.textContent = text;
+      message.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    fineSelect.addEventListener("change", updateFineFields);
+
+    document.querySelectorAll("[data-date-offset]").forEach(button => {
+      button.addEventListener("click", () => {
+        dateInput.value = localISODate(Number(button.dataset.dateOffset));
+      });
+    });
+
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const fine = state.fines.find(item => item.id === fineSelect.value);
+      const payload = {
+        player: playerSelect.value,
+        fineId: fineSelect.value,
+        amount: Number(amountInput.value),
+        date: dateInput.value,
+        comment: commentInput.value.trim()
+      };
+
+      submitButton.disabled = true;
+      submitText.textContent = "Guardant…";
+      message.className = "message";
+
+      try {
+        const result = state.isLive
+          ? await callServer("saveFine", payload)
+          : await new Promise(resolve => setTimeout(() => resolve({ ...payload, fine: fine.label, ok: true }), 500));
+
+        showMessage("success", `${result.player}: ${result.fine} registrada correctament.`);
+        fineSelect.value = "";
+        amountInput.value = "";
+        commentInput.value = "";
+        amountField.hidden = true;
+        fineHint.hidden = true;
+        commentOptional.textContent = "(opcional)";
+        commentInput.required = false;
+        dateInput.value = localISODate();
+        fineSelect.focus();
+      } catch (error) {
+        showMessage("error", error.message || "No s'ha pogut guardar la multa.");
+      } finally {
+        submitButton.disabled = false;
+        submitText.textContent = "Guardar multa";
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const data = state.isLive ? await callServer("getBootstrapData") : { ...MOCK_DATA, today: localISODate() };
+        initialize(data);
+      } catch (error) {
+        document.getElementById("connectionText").textContent = "Error";
+        showMessage("error", error.message || "No s'han pogut carregar les dades.");
+      }
+    });
+  </script>
+</body>
+</html>
