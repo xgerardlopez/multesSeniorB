@@ -166,12 +166,46 @@
     select, input { min-height: 52px; padding: 0 14px; }
     textarea { min-height: 88px; padding: 13px 14px; resize: vertical; }
 
-    input[type="date"] {
+    .date-input-shell {
+      width: 100%;
+      min-width: 0;
+      min-height: 52px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: #fff;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .date-input-shell:focus-within {
+      border-color: var(--navy-light);
+      box-shadow: 0 0 0 4px rgba(22,58,114,.1);
+    }
+
+    .date-input-shell input[type="date"] {
       display: block;
+      width: 100%;
       min-width: 0;
       max-width: 100%;
+      min-height: 50px;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      -webkit-appearance: none;
+      appearance: none;
       inline-size: 100%;
       min-inline-size: 0;
+    }
+
+    .date-input-shell input[type="date"]:focus {
+      border: 0;
+      box-shadow: none;
+    }
+
+    .date-input-shell input[type="date"]::-webkit-date-and-time-value {
+      min-width: 0;
+      text-align: left;
     }
 
     select:focus, input:focus, textarea:focus {
@@ -335,7 +369,9 @@
 
       <div class="field">
         <label for="date">Data <span class="required">*</span></label>
-        <input id="date" name="date" type="date" required>
+        <div class="date-input-shell">
+          <input id="date" name="date" type="date" required>
+        </div>
         <div class="date-shortcuts">
           <button type="button" data-date-offset="0">Avui</button>
           <button type="button" data-date-offset="-1">Ahir</button>
