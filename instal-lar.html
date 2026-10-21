@@ -106,7 +106,10 @@
   </main>
 
   <script>
-    if (window.navigator.standalone === true) {
+    const isStandalone = window.navigator.standalone === true
+      || window.matchMedia("(display-mode: standalone)").matches;
+
+    if (isStandalone) {
       window.location.replace("https://script.google.com/macros/s/AKfycbwl3T4MXCbpq4uXV6OJagKyg6tg1gXBP15OrgJJZ6l8MGcVbWVzGE2kbSlQF8_Sdh_d/exec");
     }
   </script>
